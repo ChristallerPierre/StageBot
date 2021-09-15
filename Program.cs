@@ -1,60 +1,38 @@
 ﻿using Discord;
-using Discord.Rest;
-using Discord.WebSocket;
-using Serilog;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
+using System.IO;
+using System.Reflection;
 
 namespace StageBot
 {
 	class Program
 	{
-		private string _botToken;
-		private DiscordSocketClient _client;
+		public static IConfigurationRoot Configuration { get; set; }
 
 		static void Main(string[] args)
 		{
+			var secretsPath = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
+
+			var builder = new ConfigurationBuilder();
+			var appAssembly = Assembly.GetExecutingAssembly();
+			builder.AddUserSecrets(appAssembly);
+			Configuration = builder.Build();
+
+			IServiceProvider services = new ServiceCollection()
+				.Configure<Secrets>(Configuration.GetSection(nameof(Secrets)))
+				.AddOptions()
+				.AddScoped<IBotStartup, BotStartup>()
+				.BuildServiceProvider();
+
+			IBotStartup main = services.GetService<IBotStartup>();
+
 			try {
-				new Program().MainAsync().GetAwaiter().GetResult();
+				main.MainAsync().GetAwaiter().GetResult();
 			} catch (Exception e) {
-				Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
+				BotStartup.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
 			}
-		}
-
-		public async Task MainAsync()
-		{
-			_client = new DiscordSocketClient();
-			_client.Log += Log;
-			Environment.
-			new BaseDiscordClient();
-		}
-
-		public static Task Log(LogMessage msg)
-		{
-			switch (msg.Severity) {
-				case LogSeverity.Critical:
-					Serilog.Log.Fatal(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Debug:
-					Serilog.Log.Debug(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Error:
-					Serilog.Log.Error(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Info:
-					Serilog.Log.Information(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Verbose:
-					Serilog.Log.Verbose(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Warning:
-					Serilog.Log.Warning(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-			}
-
-			Console.WriteLine(msg.ToString());
-
-			return Task.CompletedTask;
 		}
 	}
 }
