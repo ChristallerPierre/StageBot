@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace StageBot
+namespace StageBot.Setup
 {
 	public interface IBotStartup
 	{

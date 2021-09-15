@@ -1,10 +1,12 @@
 ﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Options;
+using StageBot.Modules;
 using System;
 using System.Threading.Tasks;
 
-namespace StageBot
+namespace StageBot.Setup
 {
 	public class BotStartup : IBotStartup
 	{
@@ -22,6 +24,10 @@ namespace StageBot
 			_client.Log += Log;
 			await _client.LoginAsync(TokenType.Bot, _botToken);
 			await _client.StartAsync();
+			
+			var handler = new CommandHandler(_client, new CommandService());
+			await handler.InstallCommandsAsync();
+			
 			// block this task until program is closed
 			await Task.Delay(-1);
 		}

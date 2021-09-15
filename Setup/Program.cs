@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace StageBot
+namespace StageBot.Setup
 {
 	class Program
 	{

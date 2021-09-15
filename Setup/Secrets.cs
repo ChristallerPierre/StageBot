@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot
+namespace StageBot.Setup
 {
 	public class Secrets
 	{
