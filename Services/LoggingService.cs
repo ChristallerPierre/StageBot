@@ -1,13 +1,26 @@
 ﻿using Discord;
 using Discord.Commands;
+using Serilog;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using LogSeri = Serilog.Log;
+
 namespace StageBot.Services
 {
-	public class LoggingService
+	public static class LoggingService
 	{
+		public static void Setup()
+		{
+			using var logger = new LoggerConfiguration()
+				.WriteTo.File("Logs/Log.txt", rollingInterval: RollingInterval.Day)
+				.WriteTo.Console()
+				.CreateLogger();
+
+			LogSeri.Logger = logger;
+		}
+
 		public static Task Log(LogMessage msg)
 		{
 			var log = string.Empty;
@@ -16,26 +29,26 @@ namespace StageBot.Services
 
 			switch (msg.Severity) {
 				case LogSeverity.Critical:
-					Serilog.Log.Fatal(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Fatal(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
 					break;
 				case LogSeverity.Debug:
-					Serilog.Log.Debug(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Debug(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
 					break;
 				case LogSeverity.Error:
-					Serilog.Log.Error(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Error(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
 					break;
 				case LogSeverity.Info:
-					Serilog.Log.Information(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Information(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
 					break;
 				case LogSeverity.Verbose:
-					Serilog.Log.Verbose(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Verbose(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
 					break;
 				case LogSeverity.Warning:
-					Serilog.Log.Warning(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Warning(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
 					break;
 			}
 
-			Console.WriteLine(msg.ToString());
+			//Console.WriteLine(msg.ToString());
 			return Task.CompletedTask;
 		}
 	}

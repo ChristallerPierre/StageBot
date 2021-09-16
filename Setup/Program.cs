@@ -21,6 +21,8 @@ namespace StageBot.Setup
 			builder.AddUserSecrets(appAssembly);
 			Configuration = builder.Build();
 
+			LoggingService.Setup();
+
 			IServiceProvider services = new ServiceCollection()
 				.Configure<Secrets>(Configuration.GetSection(nameof(Secrets)))
 				.AddOptions()
