@@ -1,6 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
-using StageBot.Setup;
+using StageBot.Services;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,6 +11,8 @@ namespace StageBot.Modules
 		private class Commands
 		{
 			public const string JOIN = "join";
+			public const string HELP = "help";
+			public const string QUESTION_MARK = "?";
 		}
 
 		[Command(Commands.JOIN)]
@@ -18,8 +20,8 @@ namespace StageBot.Modules
 		public async Task Join(string channelName)
 		{
 			if (string.IsNullOrWhiteSpace(channelName)) {
-				var errorMessage = $"Veuillez faire suivre la commande avec le nom d'un channel vocal.";
-				await BotStartup.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
+				var errorMessage = $"Veuillez préciser le nom d'un channel vocal après la commande.";
+				await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
 
 				await ReplyAsync(errorMessage);
 				return;
@@ -28,15 +30,25 @@ namespace StageBot.Modules
 			var channel = Context.Guild.VoiceChannels.SingleOrDefault(channel => channel.Name == channelName);
 			if (channel is null) {
 				var errorMessage = $"Channel {channelName} non-trouvé.";
-				await BotStartup.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
+				await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
 				await ReplyAsync(errorMessage);
 				return;
 			}
 
-			var message = $"*a rejoint le channel {channelName}*";
-			await BotStartup.Log(new LogMessage(LogSeverity.Info, nameof(Join), message));
-			await ReplyAsync(message);
 			await channel.ConnectAsync();
+			var message = $"*a rejoint le channel {channelName}.*";
+			await LoggingService.Log(new LogMessage(LogSeverity.Info, nameof(Join), message));
+			await ReplyAsync(message);
+		}
+
+		[Command(Commands.HELP)]
+		[Alias(Commands.QUESTION_MARK)]
+		[Summary("Affiche l'aide")]
+		public async Task Help()
+		{
+			var message = "aide : to be redacted";
+			await LoggingService.Log(new LogMessage(LogSeverity.Info, nameof(Join), message));
+			await ReplyAsync(message);
 		}
 	}
 }

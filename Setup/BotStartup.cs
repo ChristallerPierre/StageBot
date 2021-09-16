@@ -2,7 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Options;
-using StageBot.Modules;
+using StageBot.Services;
 using System;
 using System.Threading.Tasks;
 
@@ -21,43 +21,20 @@ namespace StageBot.Setup
 		public async Task MainAsync()
 		{
 			_client = new DiscordSocketClient();
-			_client.Log += Log;
+			_client.Log += LoggingService.Log;
+			_client.Connected += StartCommandHandler;
+
 			await _client.LoginAsync(TokenType.Bot, _botToken);
 			await _client.StartAsync();
-			
-			var handler = new CommandHandler(_client, new CommandService());
-			await handler.InstallCommandsAsync();
-			
+
 			// block this task until program is closed
 			await Task.Delay(-1);
 		}
 
-		public static Task Log(LogMessage msg)
+		public async Task StartCommandHandler()
 		{
-			switch (msg.Severity) {
-				case LogSeverity.Critical:
-					Serilog.Log.Fatal(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Debug:
-					Serilog.Log.Debug(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Error:
-					Serilog.Log.Error(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Info:
-					Serilog.Log.Information(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Verbose:
-					Serilog.Log.Verbose(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-				case LogSeverity.Warning:
-					Serilog.Log.Warning(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
-					break;
-			}
-
-			Console.WriteLine(msg.ToString());
-
-			return Task.CompletedTask;
+			var handler = new CommandHandler(_client, new CommandService());
+			await handler.InstallCommandsAsync();
 		}
 	}
 }

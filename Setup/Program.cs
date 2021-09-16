@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StageBot.Services;
 using System;
 using System.IO;
 using System.Reflection;
@@ -31,7 +32,7 @@ namespace StageBot.Setup
 			try {
 				main.MainAsync().GetAwaiter().GetResult();
 			} catch (Exception e) {
-				BotStartup.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
+				LoggingService.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
 			}
 		}
 	}
