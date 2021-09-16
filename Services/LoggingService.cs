@@ -23,33 +23,36 @@ namespace StageBot.Services
 
 		public static Task Log(LogMessage msg)
 		{
-			var log = string.Empty;
-			if (msg.Exception is CommandException cmdException)
-				log = $"{cmdException.Command.Aliases.First()} failed to execute in {cmdException.Context.Channel}.{Environment.NewLine}";
-
 			switch (msg.Severity) {
 				case LogSeverity.Critical:
-					LogSeri.Fatal(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Fatal(msg.Exception, GetLogMessage(msg));
 					break;
 				case LogSeverity.Debug:
-					LogSeri.Debug(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Debug(msg.Exception, GetLogMessage(msg));
 					break;
 				case LogSeverity.Error:
-					LogSeri.Error(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Error(msg.Exception, GetLogMessage(msg));
 					break;
 				case LogSeverity.Info:
-					LogSeri.Information(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Information(msg.Exception, GetLogMessage(msg));
 					break;
 				case LogSeverity.Verbose:
-					LogSeri.Verbose(msg.Exception, msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Verbose(msg.Exception, GetLogMessage(msg));
 					break;
 				case LogSeverity.Warning:
-					LogSeri.Warning(msg.Exception, log + msg.Source + Environment.NewLine + msg.Message);
+					LogSeri.Warning(msg.Exception, GetLogMessage(msg));
 					break;
 			}
 
-			//Console.WriteLine(msg.ToString());
 			return Task.CompletedTask;
+		}
+
+		private static string GetLogMessage(LogMessage msg)
+		{
+			var log = string.Empty;
+			if (msg.Exception is CommandException cmdException)
+				log = $"{cmdException.Command.Aliases.First()} failed to execute in {cmdException.Context.Channel}.{Environment.NewLine}";
+			return log + msg.Source + Environment.NewLine + msg.Message;
 		}
 	}
 }
