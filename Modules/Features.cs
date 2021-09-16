@@ -6,7 +6,6 @@ namespace StageBot
 {
 	class Features
 	{
-		// sur commande !join, il rejoint un stage channel (salon conférence) et reste co... bah... 24/7
 		// avec !titre, paramètre le thème/titre de la conf 
 		// !leave pour le déco
 		// gestion des rôles
