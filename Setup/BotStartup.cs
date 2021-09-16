@@ -20,19 +20,21 @@ namespace StageBot.Setup
 
 		public async Task MainAsync()
 		{
-			_client = new DiscordSocketClient();
-			_client.Log += LoggingService.Log;
-			//_client.Connected += CommandHandler.StartCommandHandler;
-			//_client.Disconnected += CommandHandler.StopCommandHandler;
-			_client.Connected += StartCommandHandler;
-			_client.Disconnected += StopCommandHandler;
-			_client.Ready += ClientReady;
+			//try {
+				_client = new DiscordSocketClient();
+				_client.Log += LoggingService.Log;
+				_client.Connected += StartCommandHandler;
+				_client.Disconnected += StopCommandHandler;
+				_client.Ready += ClientReady;
 
-			await _client.LoginAsync(TokenType.Bot, _botToken);
-			await _client.StartAsync();
+				await _client.LoginAsync(TokenType.Bot, _botToken);
+				await _client.StartAsync();
 
-			// block this task until program is closed
-			await Task.Delay(-1);
+				// block this task until program is closed
+				await Task.Delay(-1);
+			//} catch (Exception e) {
+			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(MainAsync), "Error", e));
+			//}
 		}
 
 		public async Task StartCommandHandler()
