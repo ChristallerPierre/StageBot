@@ -16,7 +16,20 @@ namespace StageBot.Modules
 		[Command(Commands.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
 		[Name(Commands.JOIN)]
+		public async Task Join()
+		{
+			await ExecuteCommand();
+		}
+
+		[Command(Commands.JOIN, RunMode = RunMode.Async)]
+		[Summary("Demande au bot de rejoindre le channel vocal")]
+		[Name(Commands.JOIN)]
 		public async Task Join(string inputChannelName)
+		{
+			await ExecuteCommand(inputChannelName);
+		}
+
+		private async Task ExecuteCommand(string inputChannelName = "")
 		{
 			try {
 				var selectedChannel = await GetRequestedChannelName(inputChannelName);
@@ -64,7 +77,7 @@ namespace StageBot.Modules
 				.OrderBy(o => o.index)
 				.ThenBy(o => o.chan)
 				.FirstOrDefault()
-				.chan;
+				?.chan;
 			return selectedChannel;
 		}
 
