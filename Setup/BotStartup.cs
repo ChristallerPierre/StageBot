@@ -13,9 +13,11 @@ namespace StageBot.Setup
 		private string _botToken;
 		private DiscordSocketClient _client;
 		private CommandHandler _handler;
+		private IServiceProvider _serviceProvider;
 
-		public BotStartup(IOptions<Secrets> secrets, CommandHandler handler)
+		public BotStartup(IOptions<Secrets> secrets, CommandHandler handler, IServiceProvider serviceProvider)
 		{
+			_serviceProvider = serviceProvider;
 			_botToken = secrets.Value.BotToken;
 			_handler = handler;
 		}
@@ -26,10 +28,6 @@ namespace StageBot.Setup
 			_client = new DiscordSocketClient();
 			_client.Log += LoggingService.Log;
 			_client.Connected += StartCommandHandler;
-			//_client.Connected += async () => {
-			//var serviceProvider = new Initialize(new CommandService(), _client).BuildServiceProvider();
-			//	await _handler.InitializeAsync();
-			//};
 			_client.Disconnected += StopCommandHandler;
 			_client.Ready += ClientReady;
 
@@ -45,8 +43,8 @@ namespace StageBot.Setup
 
 		public async Task StartCommandHandler()
 		{
-			var handler = new CommandHandler(null, _client, new CommandService());
-			await handler.InitializeAsync();
+			_handler = new CommandHandler(_serviceProvider, _client, new CommandService());
+			await _handler.InitializeAsync();
 		}
 
 		public async Task StopCommandHandler(Exception exception)
