@@ -9,7 +9,9 @@ namespace StageBot.Modules
 {
 	// todo : fix time-out sur connexion audio
 	// todo : ajouter gestion des rôles
+	// https://docs.stillu.cc/faq/commands/general.html#how-can-i-restrict-some-of-my-commands-so-only-specific-users-can-execute-them
 	// todo : auto disconnect from voice channels on stop
+	// todo : /commands
 
 	public class JoinCommand : ModuleBase<SocketCommandContext>
 	{
