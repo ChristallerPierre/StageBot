@@ -29,11 +29,13 @@ namespace StageBot.Services
 			_command.CommandExecuted += OnCommandExecutedAsync;
 		}
 
-		private async Task OnMessageUpdated(Cacheable<IMessage, ulong> before, SocketMessage after, ISocketMessageChannel channel)
+		private Task OnMessageUpdated(Cacheable<IMessage, ulong> before, SocketMessage after, ISocketMessageChannel channel)
 		{
 			//// If the message was not in the cache, downloading it will result in getting a copy of `after`.
 			//var message = await before.GetOrDownloadAsync();
 			//Console.WriteLine($"{message} -> {after}");
+
+			return Task.CompletedTask;
 		}
 
 		private async Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
@@ -62,13 +64,12 @@ namespace StageBot.Services
 				$"Guild {guild} ; Command {commandName} ; Channel {channel} ; User {user} ; Message \"{message}\""));
 		}
 
-		private async Task OnMessageReceivedAsync(SocketMessage messageParam)
+		private Task OnMessageReceivedAsync(SocketMessage messageParam)
 		{
 			//try {
 			// don't process the command if it was a system message
-			var message = messageParam as SocketUserMessage;
-			if (message is null)
-				return;
+			if (!(messageParam is SocketUserMessage message))
+				return Task.CompletedTask;
 
 			// index of start of actual message
 			int argPos = 0;
@@ -76,11 +77,15 @@ namespace StageBot.Services
 			if (!message.HasCharPrefix('!', ref argPos)
 				|| message.HasMentionPrefix(_client.CurrentUser, ref argPos)
 				|| message.Author.IsBot)
-				return;
+				return Task.CompletedTask;
 
 			var context = new SocketCommandContext(_client, message);
+
+			// todo : Gateway - A MessageReceived handler is blocking the gateway task. -> force déco si commande attendue
 			//await
 			Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
+			return Task.CompletedTask;
+
 			//} catch (Exception e) {
 			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(HandleCommandAsync), "Error", e));
 			//}
