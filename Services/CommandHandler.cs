@@ -10,21 +10,21 @@ namespace StageBot.Services
 	public class CommandHandler
 	{
 		private readonly DiscordSocketClient _client;
-		private readonly CommandService _commands;
+		private readonly CommandService _command;
 		private readonly IServiceProvider _services;
 
 		public CommandHandler(IServiceProvider services, DiscordSocketClient client, CommandService commands)
 		{
 			_services = services;
 			_client = client;
-			_commands = commands;
+			_command = commands;
 		}
 
 		public async Task InitializeAsync()
 		{
 			_client.MessageReceived += HandleCommandAsync;
 			_client.MessageUpdated += async (before, after, channel) => { await MessageUpdated(before, after, channel); };
-			await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
+			await _command.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
 		}
 
 		private async Task MessageUpdated(Cacheable<IMessage, ulong> before, SocketMessage after, ISocketMessageChannel channel)
@@ -51,7 +51,8 @@ namespace StageBot.Services
 				return;
 
 			var context = new SocketCommandContext(_client, message);
-			await Task.Run(async () => await _commands.ExecuteAsync(context, argPos, _services));
+			await
+				Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
 			//} catch (Exception e) {
 			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(HandleCommandAsync), "Error", e));
 			//}

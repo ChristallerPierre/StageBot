@@ -8,6 +8,9 @@ using System;
 using System.IO;
 using System.Reflection;
 
+/// <summary>
+/// https://docs.stillu.cc/guides/introduction/intro.html
+/// </summary>
 namespace StageBot.Setup
 {
 	class Program
