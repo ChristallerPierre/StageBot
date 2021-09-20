@@ -1,12 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
-using StageBot.Modules;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Services
@@ -15,29 +11,20 @@ namespace StageBot.Services
 	{
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _commands;
+		private readonly IServiceProvider _services;
 
-		private IServiceProvider _services;
-
-		public CommandHandler(DiscordSocketClient client, CommandService commands)
+		public CommandHandler(IServiceProvider services, DiscordSocketClient client, CommandService commands)
 		{
-			_commands = commands;
+			_services = services;
 			_client = client;
+			_commands = commands;
 		}
 
-		public async Task InstallCommandsAsync()
+		public async Task InitializeAsync()
 		{
-			//try {
-				_client.MessageReceived += HandleCommandAsync;
-				_client.MessageUpdated += async (before, after, channel) => { await MessageUpdated(before, after, channel); };
-
-				_services = null;
-				//new ServiceCollection()
-				//.AddTransient(typeof(MainModule))
-				//.BuildServiceProvider();
-				await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
-			//} catch (Exception e) {
-			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(InstallCommandsAsync), "Error", e));
-			//}
+			_client.MessageReceived += HandleCommandAsync;
+			_client.MessageUpdated += async (before, after, channel) => { await MessageUpdated(before, after, channel); };
+			await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
 		}
 
 		private async Task MessageUpdated(Cacheable<IMessage, ulong> before, SocketMessage after, ISocketMessageChannel channel)
@@ -50,21 +37,21 @@ namespace StageBot.Services
 		private async Task HandleCommandAsync(SocketMessage messageParam)
 		{
 			//try {
-				// don't process the command if it was a system message
-				var message = messageParam as SocketUserMessage;
-				if (message is null)
-					return;
+			// don't process the command if it was a system message
+			var message = messageParam as SocketUserMessage;
+			if (message is null)
+				return;
 
-				// index of start of actual message
-				int argPos = 0;
-				// filter messages
-				if (!message.HasCharPrefix('!', ref argPos)
-					|| message.HasMentionPrefix(_client.CurrentUser, ref argPos)
-					|| message.Author.IsBot)
-					return;
+			// index of start of actual message
+			int argPos = 0;
+			// filter messages
+			if (!message.HasCharPrefix('!', ref argPos)
+				|| message.HasMentionPrefix(_client.CurrentUser, ref argPos)
+				|| message.Author.IsBot)
+				return;
 
-				var context = new SocketCommandContext(_client, message);
-				await Task.Run(async () => await _commands.ExecuteAsync(context, argPos, _services));
+			var context = new SocketCommandContext(_client, message);
+			await Task.Run(async () => await _commands.ExecuteAsync(context, argPos, _services));
 			//} catch (Exception e) {
 			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(HandleCommandAsync), "Error", e));
 			//}

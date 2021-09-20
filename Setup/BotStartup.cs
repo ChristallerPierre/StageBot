@@ -12,26 +12,32 @@ namespace StageBot.Setup
 	{
 		private string _botToken;
 		private DiscordSocketClient _client;
+		private CommandHandler _handler;
 
-		public BotStartup(IOptions<Secrets> secrets)
+		public BotStartup(IOptions<Secrets> secrets, CommandHandler handler)
 		{
 			_botToken = secrets.Value.BotToken;
+			_handler = handler;
 		}
 
 		public async Task MainAsync()
 		{
 			//try {
-				_client = new DiscordSocketClient();
-				_client.Log += LoggingService.Log;
-				_client.Connected += StartCommandHandler;
-				_client.Disconnected += StopCommandHandler;
-				_client.Ready += ClientReady;
+			_client = new DiscordSocketClient();
+			_client.Log += LoggingService.Log;
+			_client.Connected += StartCommandHandler;
+			//_client.Connected += async () => {
+			//var serviceProvider = new Initialize(new CommandService(), _client).BuildServiceProvider();
+			//	await _handler.InitializeAsync();
+			//};
+			_client.Disconnected += StopCommandHandler;
+			_client.Ready += ClientReady;
 
-				await _client.LoginAsync(TokenType.Bot, _botToken);
-				await _client.StartAsync();
+			await _client.LoginAsync(TokenType.Bot, _botToken);
+			await _client.StartAsync();
 
-				// block this task until program is closed
-				await Task.Delay(-1);
+			// block this task until program is closed
+			await Task.Delay(-1);
 			//} catch (Exception e) {
 			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(MainAsync), "Error", e));
 			//}
@@ -39,8 +45,8 @@ namespace StageBot.Setup
 
 		public async Task StartCommandHandler()
 		{
-			var handler = new CommandHandler(_client, new CommandService());
-			await handler.InstallCommandsAsync();
+			var handler = new CommandHandler(null, _client, new CommandService());
+			await handler.InitializeAsync();
 		}
 
 		public async Task StopCommandHandler(Exception exception)

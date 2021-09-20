@@ -1,4 +1,6 @@
 ﻿using Discord;
+using Discord.Commands;
+using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StageBot.Services;
@@ -10,28 +12,27 @@ namespace StageBot.Setup
 {
 	class Program
 	{
-		public static IConfigurationRoot Configuration { get; set; }
-
 		static void Main(string[] args)
 		{
-			var secretsPath = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
-
-			var builder = new ConfigurationBuilder();
-			var appAssembly = Assembly.GetExecutingAssembly();
-			builder.AddUserSecrets(appAssembly);
-			Configuration = builder.Build();
-
 			LoggingService.Setup();
-
-			IServiceProvider services = new ServiceCollection()
-				.Configure<Secrets>(Configuration.GetSection(nameof(Secrets)))
-				.AddOptions()
-				.AddScoped<IBotStartup, BotStartup>()
-				.BuildServiceProvider();
-
-			IBotStartup main = services.GetService<IBotStartup>();
-
 			try {
+				var secretsPath = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
+
+				var configBuilder = new ConfigurationBuilder();
+				var appAssembly = Assembly.GetExecutingAssembly();
+				configBuilder.AddUserSecrets(appAssembly);
+				var configuration = configBuilder.Build();
+
+				IServiceProvider services = new ServiceCollection()
+					.Configure<Secrets>(configuration.GetSection(nameof(Secrets)))
+					.AddOptions()
+					.AddSingleton<IBotStartup, BotStartup>()
+					.AddSingleton<CommandHandler>()
+					.AddSingleton<DiscordSocketClient>()
+					.AddSingleton<CommandService>()
+					.BuildServiceProvider();
+
+				IBotStartup main = services.GetService<IBotStartup>();
 				main.MainAsync().GetAwaiter().GetResult();
 			} catch (Exception e) {
 				LoggingService.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
