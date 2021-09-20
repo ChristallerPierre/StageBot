@@ -40,10 +40,6 @@ namespace StageBot.Services
 
 		private async Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
 		{
-			// We have access to the information of the command executed,
-			// the context of the command, and the result returned from the
-			// execution in this event.
-
 			var commandName = "command_name";
 			if (commandInfo.IsSpecified)
 				commandName = commandInfo.Value.Name;
@@ -64,12 +60,11 @@ namespace StageBot.Services
 				$"Guild {guild} ; Command {commandName} ; Channel {channel} ; User {user} ; Message \"{message}\""));
 		}
 
-		private Task OnMessageReceivedAsync(SocketMessage messageParam)
+		private async Task OnMessageReceivedAsync(SocketMessage messageParam)
 		{
-			//try {
 			// don't process the command if it was a system message
 			if (!(messageParam is SocketUserMessage message))
-				return Task.CompletedTask;
+				return;
 
 			// index of start of actual message
 			int argPos = 0;
@@ -77,18 +72,12 @@ namespace StageBot.Services
 			if (!message.HasCharPrefix('!', ref argPos)
 				|| message.HasMentionPrefix(_client.CurrentUser, ref argPos)
 				|| message.Author.IsBot)
-				return Task.CompletedTask;
+				return;
 
 			var context = new SocketCommandContext(_client, message);
 
-			// todo : Gateway - A MessageReceived handler is blocking the gateway task. -> force déco si commande attendue
-			//await
-			Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
-			return Task.CompletedTask;
-
-			//} catch (Exception e) {
-			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(HandleCommandAsync), "Error", e));
-			//}
+			await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
+			return;
 		}
 	}
 }

@@ -12,19 +12,16 @@ namespace StageBot.Setup
 	{
 		private string _botToken;
 		private DiscordSocketClient _client;
-		private CommandHandler _handler;
 		private IServiceProvider _serviceProvider;
 
-		public BotStartup(IOptions<Secrets> secrets, CommandHandler handler, IServiceProvider serviceProvider)
+		public BotStartup(IOptions<Secrets> secrets, IServiceProvider serviceProvider)
 		{
 			_serviceProvider = serviceProvider;
 			_botToken = secrets.Value.BotToken;
-			_handler = handler;
 		}
 
 		public async Task MainAsync()
 		{
-			//try {
 			_client = new DiscordSocketClient();
 			_client.Log += LoggingService.Log;
 			_client.Connected += StartCommandHandler;
@@ -36,15 +33,14 @@ namespace StageBot.Setup
 
 			// block this task until program is closed
 			await Task.Delay(-1);
-			//} catch (Exception e) {
-			//	await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(MainAsync), "Error", e));
-			//}
 		}
 
 		public async Task StartCommandHandler()
 		{
-			_handler = new CommandHandler(_serviceProvider, _client, new CommandService());
-			await _handler.InitializeAsync();
+			var serviceConfig = new CommandServiceConfig();
+			var commandService = new CommandService(serviceConfig);
+			var handler = new CommandHandler(_serviceProvider, _client, commandService);
+			await handler.InitializeAsync();
 		}
 
 		public async Task StopCommandHandler(Exception exception)

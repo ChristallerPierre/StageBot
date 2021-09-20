@@ -9,10 +9,11 @@ namespace StageBot.Modules
 {
 	// todo : fix time-out sur connexion audio
 	// todo : ajouter gestion des rôles
+	// todo : auto disconnect from voice channels on stop
 
 	public class JoinModule : ModuleBase<SocketCommandContext>
 	{
-		[Command(Commands.JOIN)]
+		[Command(Commands.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
 		[Name(Commands.JOIN)]
 		public async Task Join(string inputChannelName)
@@ -70,7 +71,6 @@ namespace StageBot.Modules
 		private async Task HandleChannelFoundAsync(string selectedChannel)
 		{
 			var message = $"*a rejoint le channel {selectedChannel}.*";
-			//await LoggingService.Log(new LogMessage(LogSeverity.Info, nameof(Join), message));
 			await ReplyAsync(message);
 			var audio = await Context.Guild.VoiceChannels
 				.First(chan => chan.Name == selectedChannel)
