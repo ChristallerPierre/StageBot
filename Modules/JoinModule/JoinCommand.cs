@@ -11,7 +11,7 @@ namespace StageBot.Modules
 	// todo : ajouter gestion des rôles
 	// todo : auto disconnect from voice channels on stop
 
-	public class JoinModule : ModuleBase<SocketCommandContext>
+	public class JoinCommand : ModuleBase<SocketCommandContext>
 	{
 		[Command(Commands.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]

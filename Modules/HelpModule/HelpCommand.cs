@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace StageBot.Modules
 {
-	public class HelpModule : ModuleBase<SocketCommandContext>
+	public class HelpCommand : ModuleBase<SocketCommandContext>
 	{
 		[Command(Commands.HELP)]
 		[Alias(Commands.QUESTION_MARK)]
