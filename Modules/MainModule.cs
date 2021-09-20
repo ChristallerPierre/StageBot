@@ -22,13 +22,13 @@ namespace StageBot.Modules
 
 		[Command(Commands.JOIN)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
+		[Name(Commands.JOIN)]
 		public async Task Join(string inputChannelName)
 		{
 			try {
 				if (string.IsNullOrWhiteSpace(inputChannelName)) {
 					var errorMessage = $"Veuillez préciser le nom d'un channel vocal après la commande.";
 					await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
-
 					await ReplyAsync(errorMessage);
 					return;
 				}
@@ -72,6 +72,7 @@ namespace StageBot.Modules
 		[Command(Commands.HELP)]
 		[Alias(Commands.QUESTION_MARK)]
 		[Summary("Affiche l'aide")]
+		[Name(Commands.HELP)]
 		public async Task Help()
 		{
 			var message = "aide : to be redacted";
