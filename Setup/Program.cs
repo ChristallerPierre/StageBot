@@ -9,6 +9,7 @@ using System.IO;
 using System.Reflection;
 
 /// <summary>
+/// Rien d'original, juste un peu de jugeote et pompé sans honte de 
 /// https://docs.stillu.cc/guides/introduction/intro.html
 /// </summary>
 namespace StageBot.Setup

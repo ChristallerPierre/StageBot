@@ -11,6 +11,8 @@ namespace StageBot.Services
 {
 	public static class LoggingService
 	{
+		public const string ERROR = "Error";
+
 		public static void Setup()
 		{
 			using var logger = new LoggerConfiguration()

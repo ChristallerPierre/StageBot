@@ -57,7 +57,7 @@ namespace StageBot.Services
 			await LoggingService.Log(new LogMessage(
 				LogSeverity.Info,
 				"OnCommandExecutedAsync",
-				$"Guild {guild} ; Command {commandName} ; Channel {channel} ; User {user} ; Message \"{message}\""));
+				$"Guild {guild} ; Command {commandName} ; Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; Channel {channel} ; User {user} ; Message \"{message}\""));
 		}
 
 		private async Task OnMessageReceivedAsync(SocketMessage messageParam)

@@ -16,27 +16,29 @@ namespace StageBot.Modules
 		[Command(Commands.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
 		[Name(Commands.JOIN)]
-		public async Task Join()
+		public async Task<RuntimeResult> Join()
 		{
-			await ExecuteCommand();
+			return await ExecuteCommand();
 		}
 
 		[Command(Commands.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
 		[Name(Commands.JOIN)]
-		public async Task Join(string inputChannelName)
+		public async Task<RuntimeResult> Join(string inputChannelName)
 		{
-			await ExecuteCommand(inputChannelName);
+			return await ExecuteCommand(inputChannelName);
 		}
 
-		private async Task ExecuteCommand(string inputChannelName = "")
+		private async Task<RuntimeResult> ExecuteCommand(string inputChannelName = "")
 		{
 			try {
 				var selectedChannel = await GetRequestedChannelName(inputChannelName);
 				if (selectedChannel != null)
-					await HandleChannelFoundAsync(selectedChannel);
+					return await HandleChannelFoundAsync(selectedChannel);
+				return new CommandResult(CommandError.ObjectNotFound, CommandResult.CHANNEL_NOT_FOUND);
 			} catch (Exception e) {
-				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Join), "Error", e));
+				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Join), LoggingService.ERROR, e));
+				return new CommandResult(CommandError.Exception, CommandResult.ERROR);
 			}
 		}
 
@@ -81,7 +83,7 @@ namespace StageBot.Modules
 			return selectedChannel;
 		}
 
-		private async Task HandleChannelFoundAsync(string selectedChannel)
+		private async Task<RuntimeResult> HandleChannelFoundAsync(string selectedChannel)
 		{
 			var message = $"*a rejoint le channel {selectedChannel}.*";
 			await ReplyAsync(message);
@@ -89,11 +91,12 @@ namespace StageBot.Modules
 				.First(chan => chan.Name == selectedChannel)
 				.ConnectAsync();
 			audio.Disconnected += OnAudioDisconnected;
+			return new CommandResult(null, CommandResult.SUCCESS);
 		}
 
 		private async Task OnAudioDisconnected(Exception e)
 		{
-			await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), "Error", e));
+			await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LoggingService.ERROR, e));
 		}
 	}
 }

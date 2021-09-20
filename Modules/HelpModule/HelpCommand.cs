@@ -14,7 +14,7 @@ namespace StageBot.Modules
 		[Alias(Commands.QUESTION_MARK)]
 		[Summary("Affiche l'aide")]
 		[Name(Commands.HELP)]
-		public async Task Help()
+		public async Task<RuntimeResult> Help()
 		{
 			try {
 				var messageBuilder = new StringBuilder();
@@ -29,8 +29,10 @@ namespace StageBot.Modules
 				var message = messageBuilder.ToString();
 
 				await ReplyAsync(message);
+				return new CommandResult(null, CommandResult.SUCCESS);
 			} catch (Exception e) {
-				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Help), "Error", e));
+				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Help), LoggingService.ERROR, e));
+				return new CommandResult(CommandError.ParseFailed, CommandResult.ERROR);
 			}
 		}
 	}
