@@ -18,32 +18,40 @@ namespace StageBot.Modules
 		public async Task Join(string inputChannelName)
 		{
 			try {
-				if (await HandleInputEmptyAsync(inputChannelName))
-					return;
-
-				var selectedChannel = GetSelectedChannelName(inputChannelName);
-
-				if (await HandleChannelNotFoundAsync(selectedChannel, inputChannelName))
-					return;
-
-				await HandleChannelFoundAsync(selectedChannel);
+				var selectedChannel = await GetRequestedChannelName(inputChannelName);
+				if (selectedChannel != null)
+					await HandleChannelFoundAsync(selectedChannel);
 			} catch (Exception e) {
 				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Join), "Error", e));
 			}
 		}
 
-		private async Task<bool> HandleInputEmptyAsync(string inputChannelName)
+		private async Task<string> GetRequestedChannelName(string inputChannelName)
 		{
-			if (string.IsNullOrWhiteSpace(inputChannelName)) {
-				var errorMessage = $"Veuillez préciser le nom d'un channel vocal après la commande.";
-				await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
-				await ReplyAsync(errorMessage);
-				return true;
-			}
-			return false;
+			string selectedChannel;
+			if (string.IsNullOrWhiteSpace(inputChannelName))
+				selectedChannel = GetUserConnectedVoiceChannel();
+			else
+				selectedChannel = GetExistingChannelName(inputChannelName);
+
+			return selectedChannel ?? await SendErrorMessage();
 		}
 
-		private string GetSelectedChannelName(string inputChannelName)
+		private string GetUserConnectedVoiceChannel()
+		{
+			var user = Context.User as IGuildUser;
+			return user.VoiceChannel?.Name;
+		}
+
+		private async Task<string> SendErrorMessage()
+		{
+			var errorMessage = $"Veuillez exécuter la commande en étant connecté à un channel vocal, ou préciser le nom d'un channel après la commande.";
+			await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
+			await ReplyAsync(errorMessage);
+			return null;
+		}
+
+		private string GetExistingChannelName(string inputChannelName)
 		{
 			var sanitizedInput = inputChannelName.ToLower().Trim();
 			var selectedChannel = Context.Guild.VoiceChannels
@@ -57,17 +65,6 @@ namespace StageBot.Modules
 				.FirstOrDefault()
 				.chan;
 			return selectedChannel;
-		}
-
-		private async Task<bool> HandleChannelNotFoundAsync(string selectedChannel, string inputChannelName)
-		{
-			if (selectedChannel is null) {
-				var errorMessage = $"Channel {inputChannelName} non-trouvé.";
-				await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
-				await ReplyAsync(errorMessage);
-				return true;
-			}
-			return false;
 		}
 
 		private async Task HandleChannelFoundAsync(string selectedChannel)

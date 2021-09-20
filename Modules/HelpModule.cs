@@ -20,6 +20,8 @@ namespace StageBot.Modules
 				var messageBuilder = new StringBuilder();
 				messageBuilder.AppendLine("Commandes disponibles :");
 
+				// todo  : Commands n'est pas un enum, appeler chacune de ses propriétés
+
 				foreach (var command in Enum.GetNames(typeof(Commands))) {
 					messageBuilder.Append("!");
 					messageBuilder.AppendLine(command.ToString());
