@@ -35,6 +35,8 @@ namespace StageBot.Setup
 			await Task.Delay(-1);
 		}
 
+		// todo : have the bot say hello when starting
+
 		public async Task StartCommandHandler()
 		{
 			var serviceConfig = new CommandServiceConfig();
