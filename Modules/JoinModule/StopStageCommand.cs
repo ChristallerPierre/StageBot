@@ -32,7 +32,7 @@ namespace StageBot.Modules.JoinModule
 
 				return new CommandResult(null, new LogMessage(LogSeverity.Info, nameof(StopStageCommand), $"Stage channel {stageChannel.Name} stopped."));
 			} catch (Exception e) {
-				return new CommandResult(CommandError.Exception, new LogMessage(LogSeverity.Error, nameof(StopStageCommand), $"Exception while trying to stop a channel"));
+				return new CommandResult(CommandError.Exception, new LogMessage(LogSeverity.Error, nameof(StopStageCommand), $"Exception while trying to stop a channel", e));
 			}
 		}
 	}
