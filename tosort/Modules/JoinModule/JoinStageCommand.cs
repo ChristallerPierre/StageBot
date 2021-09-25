@@ -42,10 +42,20 @@ namespace StageBot.Modules.JoinModule
 				await ReplyAsync(message);
 
 				await stageChannel.BecomeSpeakerAsync();
-				return new CommandResult(null, CommandResult.SUCCESS);
+				return new CommandResult(
+					null,
+					new LogMessage(
+						LogSeverity.Info,
+						nameof(JoinStageCommand),
+						LogService.SUCCESS));
 			} catch (Exception e) {
 				await LogService.Log(new LogMessage(LogSeverity.Error, nameof(Stage), LogService.ERROR, e));
-				return new CommandResult(CommandError.Exception, CommandResult.ERROR);
+				return new CommandResult(
+					CommandError.Exception, 
+					new LogMessage(
+						LogSeverity.Error,
+						nameof(JoinStageCommand),
+						LogService.ERROR));
 			}
 		}
 

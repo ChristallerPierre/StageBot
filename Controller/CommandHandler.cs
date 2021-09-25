@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using StageBot.Modules;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +11,8 @@ namespace StageBot.Services
 {
 	public class CommandHandler
 	{
+		private const string COMMAND_MARK = "!";
+
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _command;
 		private readonly IServiceProvider _services;
@@ -27,6 +30,8 @@ namespace StageBot.Services
 			_client.MessageUpdated += async (before, after, channel) => { await OnMessageUpdated(before, after, channel); };
 			await _command.AddModulesAsync(Assembly.GetEntryAssembly(), _services);
 			_command.CommandExecuted += OnCommandExecutedAsync;
+			_client.MessageCommandExecuted += OnMessageCommandExecuted;
+			_client.UserCommandExecuted += OnUserCommandExecuted;
 		}
 
 		private Task OnMessageUpdated(Cacheable<IMessage, ulong> before, SocketMessage after, ISocketMessageChannel channel)
@@ -36,6 +41,16 @@ namespace StageBot.Services
 			//Console.WriteLine($"{message} -> {after}");
 
 			return Task.CompletedTask;
+		}
+
+		private async Task OnMessageCommandExecuted(SocketMessageCommand command)
+		{
+			await LogService.Log(new LogMessage(LogSeverity.Info, nameof(OnMessageCommandExecuted), LogService.SUCCESS));
+		}
+
+		private async Task OnUserCommandExecuted(SocketUserCommand command)
+		{
+			await LogService.Log(new LogMessage(LogSeverity.Info, nameof(OnUserCommandExecuted), LogService.SUCCESS));
 		}
 
 		private async Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
@@ -49,15 +64,11 @@ namespace StageBot.Services
 					"OnCommandExecutedAsync",
 					"No commandInfo specified"));
 			}
-			var channel = context.Channel.Name;
-			var user = context.User.Username + "#" + context.User.Discriminator;
-			var message = context.Message.Content;
-			var guild = context.Guild.Name;
 
 			await LogService.Log(new LogMessage(
 				LogSeverity.Info,
-				"OnCommandExecutedAsync",
-				$"Guild {guild} ; Command {commandName} ; Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; Channel {channel} ; User {user} ; Message \"{message}\""));
+				nameof(OnCommandExecutedAsync),
+				LogService.ReadCommandContext(context, commandName, result)));
 		}
 
 		private async Task OnMessageReceivedAsync(SocketMessage messageParam)
@@ -69,15 +80,36 @@ namespace StageBot.Services
 			// index of start of actual message
 			int argPos = 0;
 			// filter messages
-			if (!message.HasCharPrefix('!', ref argPos)
+			if (!message.HasStringPrefix(COMMAND_MARK, ref argPos)
 				|| message.HasMentionPrefix(_client.CurrentUser, ref argPos)
 				|| message.Author.IsBot)
 				return;
 
 			var context = new SocketCommandContext(_client, message);
 
+			if (HandleInexistantCommand(message))
+				await OnInexistantCommandReceived(message);
+
 			await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
 			return;
+		}
+
+		private bool HandleInexistantCommand(SocketUserMessage message)
+		{
+			var commandWithoutCommandMark = message.Content.Remove(0, 1);
+			var splits = commandWithoutCommandMark.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			return !CommandList.Commands.ContainsKey(splits[0]);
+		}
+
+		private async Task OnInexistantCommandReceived(SocketUserMessage message)
+		{
+			var logMessage = $"{LogService.UNKNOWN_COMMAND} : {message.Content}";
+
+			await LogService.Log(new LogMessage(
+				LogSeverity.Info,
+				nameof(OnInexistantCommandReceived),
+				logMessage));
+			await message.ReplyAsync(LogService.UNKNOWN_COMMAND_HELP);
 		}
 	}
 }

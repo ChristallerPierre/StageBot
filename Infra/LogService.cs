@@ -12,6 +12,20 @@ namespace StageBot.Services
 	public static class LogService
 	{
 		public const string ERROR = "Error";
+		public const string SUCCESS = "Success";
+		public const string CHANNEL_NOT_FOUND = "Channel not found";
+		public const string UNKNOWN_COMMAND = "Unknown comand";
+		public const string UNKNOWN_COMMAND_HELP = "Commande non-reconnue. !help pour afficher la liste des commandes";
+
+		public static string ReadCommandContext(ICommandContext context, string commandName, IResult result)
+		{
+			var channel = context.Channel.Name;
+			var user = context.User.Username + "#" + context.User.Discriminator;
+			var messageContent = context.Message.Content;
+			var guild = context.Guild.Name;
+
+			return $"Guild {guild} ; Command {commandName} ; Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; Channel {channel} ; User {user} ; Message \"{messageContent}\"";
+		}
 
 		public static void Setup()
 		{

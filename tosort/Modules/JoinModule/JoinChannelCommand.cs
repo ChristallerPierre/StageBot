@@ -31,10 +31,20 @@ namespace StageBot.Modules
 				var selectedChannel = await GetRequestedChannelName(inputChannelName);
 				if (selectedChannel != null)
 					return await HandleChannelFoundAsync(selectedChannel);
-				return new CommandResult(CommandError.ObjectNotFound, CommandResult.CHANNEL_NOT_FOUND);
+				return new CommandResult(
+					CommandError.ObjectNotFound,
+					new LogMessage(
+						LogSeverity.Info,
+						nameof(JoinChannelCommand),
+						LogService.CHANNEL_NOT_FOUND));
 			} catch (Exception e) {
 				await LogService.Log(new LogMessage(LogSeverity.Error, nameof(Join), LogService.ERROR, e));
-				return new CommandResult(CommandError.Exception, CommandResult.ERROR);
+				return new CommandResult(
+					CommandError.Exception,
+					new LogMessage(
+						LogSeverity.Error,
+						nameof(JoinChannelCommand),
+						LogService.ERROR));
 			}
 		}
 
@@ -87,7 +97,12 @@ namespace StageBot.Modules
 				.First(chan => chan.Name == selectedChannel)
 				.ConnectAsync();
 			audio.Disconnected += OnAudioDisconnected;
-			return new CommandResult(null, CommandResult.SUCCESS);
+			return new CommandResult(
+				null,
+				new LogMessage(
+					LogSeverity.Info,
+					nameof(JoinChannelCommand),
+					LogService.SUCCESS));
 		}
 
 		private async Task OnAudioDisconnected(Exception e)
