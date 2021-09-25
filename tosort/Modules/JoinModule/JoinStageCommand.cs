@@ -49,13 +49,9 @@ namespace StageBot.Modules.JoinModule
 						nameof(JoinStageCommand),
 						LogService.SUCCESS));
 			} catch (Exception e) {
-				await LogService.Log(new LogMessage(LogSeverity.Error, nameof(Stage), LogService.ERROR, e));
-				return new CommandResult(
-					CommandError.Exception, 
-					new LogMessage(
-						LogSeverity.Error,
-						nameof(JoinStageCommand),
-						LogService.ERROR));
+				var logMessage = new LogMessage(LogSeverity.Error, nameof(JoinStageCommand), LogService.ERROR, e);
+				await LogService.Log(logMessage);
+				return new CommandResult(CommandError.Exception, logMessage);
 			}
 		}
 

@@ -43,6 +43,8 @@ namespace StageBot.Services
 			return Task.CompletedTask;
 		}
 
+		// todo : maybe dont keep these
+
 		private async Task OnMessageCommandExecuted(SocketMessageCommand command)
 		{
 			await LogService.Log(new LogMessage(LogSeverity.Info, nameof(OnMessageCommandExecuted), LogService.SUCCESS));
