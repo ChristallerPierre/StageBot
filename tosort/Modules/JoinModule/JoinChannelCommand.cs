@@ -9,17 +9,17 @@ namespace StageBot.Modules
 {
 	public class JoinChannelCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(Commands.JOIN, RunMode = RunMode.Async)]
+		[Command(CommandList.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
-		[Name(Commands.JOIN)]
+		[Name(CommandList.JOIN)]
 		public async Task<RuntimeResult> Join()
 		{
 			return await ExecuteCommand();
 		}
 
-		[Command(Commands.JOIN, RunMode = RunMode.Async)]
+		[Command(CommandList.JOIN, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre le channel vocal")]
-		[Name(Commands.JOIN)]
+		[Name(CommandList.JOIN)]
 		public async Task<RuntimeResult> Join(string inputChannelName)
 		{
 			return await ExecuteCommand(inputChannelName);
@@ -33,7 +33,7 @@ namespace StageBot.Modules
 					return await HandleChannelFoundAsync(selectedChannel);
 				return new CommandResult(CommandError.ObjectNotFound, CommandResult.CHANNEL_NOT_FOUND);
 			} catch (Exception e) {
-				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Join), LoggingService.ERROR, e));
+				await LogService.Log(new LogMessage(LogSeverity.Error, nameof(Join), LogService.ERROR, e));
 				return new CommandResult(CommandError.Exception, CommandResult.ERROR);
 			}
 		}
@@ -58,7 +58,7 @@ namespace StageBot.Modules
 		private async Task<string> SendErrorMessage()
 		{
 			var errorMessage = $"Veuillez exécuter la commande en étant connecté à un channel vocal, ou préciser le nom d'un channel après la commande.";
-			await LoggingService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
+			await LogService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
 			await ReplyAsync(errorMessage);
 			return null;
 		}
@@ -92,7 +92,7 @@ namespace StageBot.Modules
 
 		private async Task OnAudioDisconnected(Exception e)
 		{
-			await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LoggingService.ERROR, e));
+			await LogService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LogService.ERROR, e));
 		}
 	}
 }

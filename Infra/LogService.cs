@@ -9,7 +9,7 @@ using LogSeri = Serilog.Log;
 
 namespace StageBot.Services
 {
-	public static class LoggingService
+	public static class LogService
 	{
 		public const string ERROR = "Error";
 

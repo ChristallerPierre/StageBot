@@ -44,7 +44,7 @@ namespace StageBot.Services
 			if (commandInfo.IsSpecified)
 				commandName = commandInfo.Value.Name;
 			else {
-				await LoggingService.Log(new LogMessage(
+				await LogService.Log(new LogMessage(
 					LogSeverity.Warning,
 					"OnCommandExecutedAsync",
 					"No commandInfo specified"));
@@ -54,7 +54,7 @@ namespace StageBot.Services
 			var message = context.Message.Content;
 			var guild = context.Guild.Name;
 
-			await LoggingService.Log(new LogMessage(
+			await LogService.Log(new LogMessage(
 				LogSeverity.Info,
 				"OnCommandExecutedAsync",
 				$"Guild {guild} ; Command {commandName} ; Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; Channel {channel} ; User {user} ; Message \"{message}\""));

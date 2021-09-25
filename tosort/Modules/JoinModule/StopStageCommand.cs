@@ -12,9 +12,9 @@ namespace StageBot.Modules.JoinModule
 	{
 		// todo : update les summary des commands
 
-		[Command(Commands.STOP, RunMode = RunMode.Async)]
+		[Command(CommandList.STOP, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(Commands.STOP)]
+		[Name(CommandList.STOP)]
 		public async Task<RuntimeResult> StopStage()
 		{
 			return await ExecuteCommand();

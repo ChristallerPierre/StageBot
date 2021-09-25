@@ -10,9 +10,9 @@ namespace StageBot.Modules.JoinModule
 {
 	public class StartStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(Commands.START, RunMode = RunMode.Async)]
+		[Command(CommandList.START, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(Commands.START)]
+		[Name(CommandList.START)]
 		public async Task<RuntimeResult> StartStage(string inputTopic)
 		{
 			return await ExecuteCommand(inputTopic);

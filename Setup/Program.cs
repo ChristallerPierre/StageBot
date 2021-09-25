@@ -3,6 +3,8 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StageBot.Controller.HelpModule;
+using StageBot.Interactor;
 using StageBot.Services;
 using System;
 using System.IO;
@@ -15,7 +17,7 @@ using System.Reflection;
 // todo : /commands
 
 /// <summary>
-/// Rien d'original, juste un peu de jugeote et pompé sans honte de 
+/// Rien d'original, juste un peu de jugeote et pompé sans honte de cette doc pas à jour
 /// https://docs.stillu.cc/guides/introduction/intro.html
 /// </summary>
 namespace StageBot.Setup
@@ -24,7 +26,7 @@ namespace StageBot.Setup
 	{
 		static void Main(string[] args)
 		{
-			LoggingService.Setup();
+			LogService.Setup();
 			try {
 				var secretsPath = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
 
@@ -40,12 +42,13 @@ namespace StageBot.Setup
 					.AddSingleton<CommandHandler>()
 					.AddSingleton<DiscordSocketClient>()
 					.AddSingleton<CommandService>()
+					.AddScoped<IHelpInteractor, HelpInteractor>()
 					.BuildServiceProvider();
 
 				IBotStartup main = services.GetService<IBotStartup>();
 				main.MainAsync().GetAwaiter().GetResult();
 			} catch (Exception e) {
-				LoggingService.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
+				LogService.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
 			}
 		}
 	}

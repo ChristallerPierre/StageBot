@@ -23,7 +23,7 @@ namespace StageBot.Setup
 		public async Task MainAsync()
 		{
 			_client = new DiscordSocketClient();
-			_client.Log += LoggingService.Log;
+			_client.Log += LogService.Log;
 			_client.Connected += StartCommandHandler;
 			_client.Disconnected += StopCommandHandler;
 			_client.Ready += ClientReady;
@@ -34,8 +34,6 @@ namespace StageBot.Setup
 			// block this task until program is closed
 			await Task.Delay(-1);
 		}
-
-		// todo : have the bot say hello when starting
 
 		public async Task StartCommandHandler()
 		{
@@ -48,14 +46,14 @@ namespace StageBot.Setup
 		public async Task StopCommandHandler(Exception exception)
 		{
 			var message = new LogMessage(LogSeverity.Error, nameof(StopCommandHandler), "Bot disconnected", exception);
-			await LoggingService.Log(message);
+			await LogService.Log(message);
 		}
 
 		public async Task ClientReady()
 		{
-			// do something here, probably
 			var message = new LogMessage(LogSeverity.Info, nameof(ClientReady), "Client is ready");
-			await LoggingService.Log(message);
+			await LogService.Log(message);
+			// todo : have the bot say hello when starting
 		}
 	}
 }

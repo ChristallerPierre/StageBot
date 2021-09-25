@@ -10,9 +10,10 @@ namespace StageBot.Modules.JoinModule
 {
 	public class ExitStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(Commands.EXIT, RunMode = RunMode.Async)]
+		[Command(CommandList.EXIT, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(Commands.EXIT)]
+		[Name(CommandList.EXIT)]
+		[Alias(CommandList.LEAVE)]
 		public async Task<RuntimeResult> Exit()
 		{
 			return await ExecuteCommand();

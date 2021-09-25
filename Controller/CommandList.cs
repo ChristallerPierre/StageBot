@@ -4,8 +4,17 @@ using System.Text;
 
 namespace StageBot.Modules
 {
-	public class Commands
+	public class CommandList
 	{
+		public static Dictionary<string, string> Commands = new Dictionary<string, string>() {
+			{ START, "!start <titre> pour démarrer la présentation avec la scène." },
+			{ STOP, "!stop pour arrêter la présentation avec la scène." },
+			{ EXIT, "!exit pour faire sortir le bot du channel vocal" },
+			{ TITRE, "!titre <nouveau titre> pour changer le titre de la présentation." },
+			{ SCENE, "!scene <nom de la scène> pour que le bot rejoigne le channel de la scène précisée." },
+			{ JOIN, "!join <nom du channel> pour que le bot rejoigne le channel vocal précisé." },
+		};
+
 		/// <summary>
 		/// Démarre le stage channel
 		/// </summary>
@@ -19,12 +28,13 @@ namespace StageBot.Modules
 		/// Quitte une scène ou un channel vocal
 		/// </summary>
 		public const string EXIT = "exit";
+		public const string LEAVE = "leave";
 
 		/// <summary>
 		/// Modifie le titre d'un stage channel
 		/// </summary>
 		public const string EDIT = "edit";
-		public const string TITLE = "title";
+		public const string TITRE = "titre";
 
 		/// <summary>
 		/// Rejoindre une scène

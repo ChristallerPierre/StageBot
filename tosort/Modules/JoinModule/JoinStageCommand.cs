@@ -12,19 +12,19 @@ namespace StageBot.Modules.JoinModule
 {
 	public class JoinStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(Commands.STAGE, RunMode = RunMode.Async)]
+		[Command(CommandList.STAGE, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(Commands.SCENE)]
-		[Alias(Commands.SCENE)]
+		[Name(CommandList.SCENE)]
+		[Alias(CommandList.SCENE)]
 		public async Task<RuntimeResult> Stage(string inputStageName)
 		{
 			return await ExecuteCommand(inputStageName);
 		}
 
-		[Command(Commands.STAGE, RunMode = RunMode.Async)]
+		[Command(CommandList.STAGE, RunMode = RunMode.Async)]
 		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(Commands.SCENE)]
-		[Alias(Commands.SCENE)]
+		[Name(CommandList.SCENE)]
+		[Alias(CommandList.SCENE)]
 		public async Task<RuntimeResult> Stage()
 		{
 			return await ExecuteCommand();
@@ -44,7 +44,7 @@ namespace StageBot.Modules.JoinModule
 				await stageChannel.BecomeSpeakerAsync();
 				return new CommandResult(null, CommandResult.SUCCESS);
 			} catch (Exception e) {
-				await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(Stage), LoggingService.ERROR, e));
+				await LogService.Log(new LogMessage(LogSeverity.Error, nameof(Stage), LogService.ERROR, e));
 				return new CommandResult(CommandError.Exception, CommandResult.ERROR);
 			}
 		}
@@ -53,7 +53,7 @@ namespace StageBot.Modules.JoinModule
 		private async Task OnAudioDisconnected(Exception e)
 		{
 			ContextService.IdStageChannel = 0;
-			await LoggingService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LoggingService.ERROR, e));
+			await LogService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LogService.ERROR, e));
 		}
 
 		private SocketStageChannel GetStageChannel(string inputStageName)
