@@ -16,6 +16,7 @@ namespace StageBot.Services
 		public const string CHANNEL_NOT_FOUND = "Channel not found";
 		public const string UNKNOWN_COMMAND = "Unknown comand";
 		public const string UNKNOWN_COMMAND_HELP = "Commande non-reconnue. !help pour afficher la liste des commandes";
+		public const string MISING_CHANNEL_NAME = "Veuillez exécuter la commande en étant connecté à un channel vocal, ou préciser le nom d'un channel après la commande.";
 
 		public static string ReadCommandContext(ICommandContext context, string commandName, IResult result)
 		{

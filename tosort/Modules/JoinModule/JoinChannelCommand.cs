@@ -63,9 +63,8 @@ namespace StageBot.Modules
 
 		private async Task<string> SendErrorMessage()
 		{
-			var errorMessage = $"Veuillez exécuter la commande en étant connecté à un channel vocal, ou préciser le nom d'un channel après la commande.";
-			await LogService.Log(new LogMessage(LogSeverity.Warning, nameof(Join), errorMessage));
-			await ReplyAsync(errorMessage);
+			await LogService.Log(new LogMessage(LogSeverity.Warning, nameof(SendErrorMessage), LogService.MISING_CHANNEL_NAME));
+			await ReplyAsync(LogService.MISING_CHANNEL_NAME);
 			return null;
 		}
 
@@ -97,7 +96,7 @@ namespace StageBot.Modules
 				null,
 				new LogMessage(
 					LogSeverity.Info,
-					nameof(JoinChannelCommand),
+					nameof(HandleChannelFoundAsync),
 					LogService.SUCCESS));
 		}
 
