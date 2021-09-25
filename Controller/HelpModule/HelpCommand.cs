@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StageBot.Controller.HelpModule
 {
-	public class HelpCommand : ModuleBase<SocketCommandContext>, IHelpCommand
+	public class HelpCommand : BaseCommand, IHelpCommand
 	{
 		IHelpInteractor _interactor;
 
@@ -22,12 +22,6 @@ namespace StageBot.Controller.HelpModule
 		public async Task<RuntimeResult> Help()
 		{
 			return await _interactor.DisplayHelpAsync(this);
-		}
-
-		public async Task<IUserMessage> ReplyAsync(string text)
-		{
-			var userMessage = await base.ReplyAsync(text);
-			return userMessage;
 		}
 	}
 }

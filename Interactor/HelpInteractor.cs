@@ -13,13 +13,6 @@ namespace StageBot.Interactor
 {
 	public class HelpInteractor : IHelpInteractor
 	{
-		//IHelpCommand _command;
-
-		//public HelpInteractor(IHelpCommand command)
-		//{
-		//	_command = command;
-		//}
-
 		public async Task<CommandResult> DisplayHelpAsync(IHelpCommand command)
 		{
 			try {
