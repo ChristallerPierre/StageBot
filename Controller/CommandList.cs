@@ -7,12 +7,13 @@ namespace StageBot.Modules
 	public class CommandList
 	{
 		public static Dictionary<string, string> Commands = new Dictionary<string, string>() {
-			{ START, "!start <titre> pour démarrer la présentation avec la scène." },
-			{ STOP, "!stop pour arrêter la présentation avec la scène." },
+			{ START, "!start <titre> pour démarrer la présentation sur la scène." },
+			{ STOP, "!stop pour arrêter la présentation sur la scène." },
 			{ EXIT, "!exit pour faire sortir le bot du channel vocal" },
 			{ TITRE, "!titre <nouveau titre> pour changer le titre de la présentation." },
 			{ SCENE, "!scene <nom de la scène> pour que le bot rejoigne le channel de la scène précisée." },
 			{ JOIN, "!join <nom du channel> pour que le bot rejoigne le channel vocal précisé." },
+			{ HELP, "!help pour afficher ce message." }
 		};
 
 		/// <summary>

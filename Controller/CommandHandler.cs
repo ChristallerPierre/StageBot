@@ -91,8 +91,8 @@ namespace StageBot.Services
 
 			if (HandleInexistantCommand(message))
 				await OnInexistantCommandReceived(message);
-
-			await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
+			else
+				await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
 			return;
 		}
 

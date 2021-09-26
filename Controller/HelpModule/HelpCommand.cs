@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Interactor;
 using StageBot.Modules;
 using System.Threading.Tasks;
@@ -19,6 +21,7 @@ namespace StageBot.Controller.HelpModule
 		[Alias(CommandList.QUESTION_MARK)]
 		[Summary("Affiche l'aide")]
 		[Name(CommandList.HELP)]
+		[RequireRole(GuildRoles.ROLE)]
 		public async Task<RuntimeResult> Help()
 		{
 			return await _interactor.DisplayHelpAsync(this);
