@@ -9,17 +9,20 @@ namespace StageBot.Modules
 {
 	public class JoinChannelCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(CommandList.JOIN, RunMode = RunMode.Async)]
-		[Summary("Demande au bot de rejoindre le channel vocal")]
-		[Name(CommandList.JOIN)]
+		public const string JOIN = "join";
+		public const string CMD_DESC = "!join <nom du channel> pour que le bot rejoigne le channel vocal précisé.";
+
+		[Name(JOIN)]
+		[Command(JOIN, RunMode = RunMode.Async)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join()
 		{
 			return await ExecuteCommand();
 		}
 
-		[Command(CommandList.JOIN, RunMode = RunMode.Async)]
-		[Summary("Demande au bot de rejoindre le channel vocal")]
-		[Name(CommandList.JOIN)]
+		[Name(JOIN)]
+		[Command(JOIN, RunMode = RunMode.Async)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join(string inputChannelName)
 		{
 			return await ExecuteCommand(inputChannelName);

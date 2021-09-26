@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using StageBot.Controller;
 using StageBot.Services;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,12 @@ namespace StageBot.Modules.JoinModule
 {
 	public class StartStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(CommandList.START, RunMode = RunMode.Async)]
-		//[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.START)]
+		public const string START = "start";
+		public const string CMD_DESC = "!start <titre> pour démarrer la présentation sur la scène.";
+
+		[Name(START)]
+		[Command(START, RunMode = RunMode.Async)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> StartStage(string inputTopic)
 		{
 			return await ExecuteCommand(inputTopic);

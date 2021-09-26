@@ -1,19 +1,20 @@
 ﻿using Discord;
 using Discord.Commands;
 using StageBot.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
 {
 	public class ExitStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(CommandList.EXIT, RunMode = RunMode.Async)]
-		//[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.EXIT)]
-		[Alias(CommandList.LEAVE)]
+		public const string EXIT = "exit";
+		public const string LEAVE = "leave";
+		public const string CMD_DESC = "!exit pour faire sortir le bot du channel vocal";
+
+		[Name(EXIT)]
+		[Command(EXIT, RunMode = RunMode.Async)]
+		[Alias(LEAVE)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Exit()
 		{
 			return await ExecuteCommand();

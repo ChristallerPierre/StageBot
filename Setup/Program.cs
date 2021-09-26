@@ -3,11 +3,10 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StageBot.Controller.HelpModule;
+using StageBot.Controller;
 using StageBot.Interactor;
 using StageBot.Services;
 using System;
-using System.IO;
 using System.Reflection;
 
 /// <summary>

@@ -1,13 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Modules;
+using StageBot.Services;
 using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace StageBot.Services
+namespace StageBot.Controller
 {
 	public class CommandHandler
 	{
@@ -60,12 +60,11 @@ namespace StageBot.Services
 			var commandName = "command_name";
 			if (commandInfo.IsSpecified)
 				commandName = commandInfo.Value.Name;
-			else {
+			else
 				await LogService.Log(new LogMessage(
-					LogSeverity.Warning,
-					"OnCommandExecutedAsync",
-					"No commandInfo specified"));
-			}
+	LogSeverity.Warning,
+	"OnCommandExecutedAsync",
+	"No commandInfo specified"));
 
 			await LogService.Log(new LogMessage(
 				LogSeverity.Info,
@@ -100,7 +99,7 @@ namespace StageBot.Services
 		{
 			var commandWithoutCommandMark = message.Content.Remove(0, 1);
 			var splits = commandWithoutCommandMark.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			return !CommandList.Commands.ContainsKey(splits[0]);
+			return !CommandDescription.Commands.Any(cmd => cmd.Aliases.Contains(splits[0]));
 		}
 
 		private async Task OnInexistantCommandReceived(SocketUserMessage message)

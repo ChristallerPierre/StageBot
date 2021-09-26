@@ -1,15 +1,17 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
 using StageBot.Interactor;
-using StageBot.Modules;
 using System.Threading.Tasks;
 
 namespace StageBot.Controller.HelpModule
 {
 	public class HelpCommand : BaseCommand, IHelpCommand
 	{
+		public const string HELP = "help";
+		public const string QUESTION_MARK = "?";
+		public const string CMD_DESC = "!help pour afficher ce message.";
+
 		IHelpInteractor _interactor;
 
 		public HelpCommand(IHelpInteractor interactor)
@@ -17,11 +19,11 @@ namespace StageBot.Controller.HelpModule
 			_interactor = interactor;
 		}
 
-		[Command(CommandList.HELP)]
-		[Alias(CommandList.QUESTION_MARK)]
-		[Summary("Affiche l'aide")]
-		[Name(CommandList.HELP)]
+		[Name(HELP)]
+		[Command(HELP)]
+		[Alias(QUESTION_MARK)]
 		[RequireRole(GuildRoles.ROLE)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Help()
 		{
 			return await _interactor.DisplayHelpAsync(this);

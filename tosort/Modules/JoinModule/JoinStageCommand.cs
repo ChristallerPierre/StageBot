@@ -3,28 +3,30 @@ using Discord.Commands;
 using Discord.WebSocket;
 using StageBot.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
 {
 	public class JoinStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(CommandList.STAGE, RunMode = RunMode.Async)]
-		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.SCENE)]
-		[Alias(CommandList.SCENE)]
+		public const string STAGE = "stage";
+		public const string SCENE = "scene";
+		public const string CMD_DESC = "!scene <nom de la scène> pour que le bot rejoigne le channel de la scène précisée.";
+
+		[Name(SCENE)]
+		[Command(STAGE, RunMode = RunMode.Async)]
+		[Alias(SCENE)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage(string inputStageName)
 		{
 			return await ExecuteCommand(inputStageName);
 		}
 
-		[Command(CommandList.STAGE, RunMode = RunMode.Async)]
-		[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.SCENE)]
-		[Alias(CommandList.SCENE)]
+		[Name(SCENE)]
+		[Command(STAGE, RunMode = RunMode.Async)]
+		[Alias(SCENE)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage()
 		{
 			return await ExecuteCommand();

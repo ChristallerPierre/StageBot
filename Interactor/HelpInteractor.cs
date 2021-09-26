@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using StageBot.Services;
 using Discord;
 using StageBot.Controller.HelpModule;
+using StageBot.Controller;
 
 namespace StageBot.Interactor
 {
@@ -35,7 +36,7 @@ namespace StageBot.Interactor
 		{
 			var messageBuilder = new StringBuilder();
 			messageBuilder.AppendLine("Commandes disponibles :");
-			foreach (var commandDesc in CommandList.Commands.Values) {
+			foreach (var commandDesc in CommandDescription.Commands.Select(cmd => cmd.Description)) {
 				messageBuilder.AppendLine(commandDesc);
 			}
 			return messageBuilder.ToString();

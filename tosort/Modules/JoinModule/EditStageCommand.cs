@@ -1,19 +1,20 @@
 ﻿using Discord;
 using Discord.Commands;
 using StageBot.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
 {
 	public class EditStageCommand : ModuleBase<SocketCommandContext>
 	{
-		[Command(CommandList.EDIT, RunMode = RunMode.Async)]
-		//[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.EDIT)]
-		[Alias(CommandList.TITRE)]
+		public const string EDIT = "edit";
+		public const string TITRE = "titre";
+		public const string CMD_DESC = "!titre <nouveau titre> pour changer le titre de la présentation.";
+
+		[Name(EDIT)]
+		[Command(EDIT, RunMode = RunMode.Async)]
+		[Alias(TITRE)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> EditTopic(string param)
 		{
 			return await ExecuteCommand(param);

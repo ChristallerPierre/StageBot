@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.Commands;
+using StageBot.Controller;
 using StageBot.Services;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,12 @@ namespace StageBot.Modules.JoinModule
 {
 	public class StopStageCommand : ModuleBase<SocketCommandContext>
 	{
-		// todo : update les summary des commands
+		public const string STOP = "stop";
+		public const string CMD_DESC = "!stop pour arrêter la présentation sur la scène.";
 
-		[Command(CommandList.STOP, RunMode = RunMode.Async)]
-		//[Summary("Demande au bot de rejoindre la scène")]
-		[Name(CommandList.STOP)]
+		[Name(STOP)]
+		[Command(STOP, RunMode = RunMode.Async)]
+		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> StopStage()
 		{
 			return await ExecuteCommand();
