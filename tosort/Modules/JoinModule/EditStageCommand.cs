@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System.Threading.Tasks;
 
@@ -14,6 +16,7 @@ namespace StageBot.Modules.JoinModule
 		[Name(EDIT)]
 		[Command(EDIT, RunMode = RunMode.Async)]
 		[Alias(TITRE)]
+		[RequireUserRole(GuildRoles.PAMPA_TL)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> EditTopic(string param)
 		{

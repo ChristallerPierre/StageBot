@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.Commands;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace StageBot.Modules
 
 		[Name(JOIN)]
 		[Command(JOIN, RunMode = RunMode.Async)]
+		[RequireUserRole(GuildRoles.WIP)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join()
 		{
@@ -22,6 +25,7 @@ namespace StageBot.Modules
 
 		[Name(JOIN)]
 		[Command(JOIN, RunMode = RunMode.Async)]
+		[RequireUserRole(GuildRoles.WIP)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join(string inputChannelName)
 		{

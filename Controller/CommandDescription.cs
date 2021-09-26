@@ -1,9 +1,7 @@
 ﻿using StageBot.Controller.HelpModule;
 using StageBot.Modules;
 using StageBot.Modules.JoinModule;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StageBot.Controller
 {

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace StageBot.Controller.Precondition
 {
-	public class RequireRoleAttribute : PreconditionAttribute
+	public class RequireUserRoleAttribute : PreconditionAttribute
 	{
 		private readonly string _name;
 
-		public RequireRoleAttribute(string name) => _name = name;
+		public RequireUserRoleAttribute(string name) => _name = name;
 
 		public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
 		{
@@ -20,7 +20,7 @@ namespace StageBot.Controller.Precondition
 				if (context.User is SocketGuildUser user) {
 					if (user.Roles.Any(r => r.Name == _name))
 						return Task.FromResult(PreconditionResult.FromSuccess());
-					return Task.FromResult(PreconditionResult.FromError($"Bot doesn't have the role {_name}"));
+					return Task.FromResult(PreconditionResult.FromError($"{user.Nickname} tried to execute the command {context.Message.Content} without the role {_name}"));
 				}
 				return Task.FromResult(PreconditionResult.FromError("You must be in a guild to run this command."));
 			} catch (Exception ex) {

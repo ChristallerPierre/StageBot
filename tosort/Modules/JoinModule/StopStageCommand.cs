@@ -1,10 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
-using StageBot.Controller;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
@@ -16,6 +15,7 @@ namespace StageBot.Modules.JoinModule
 
 		[Name(STOP)]
 		[Command(STOP, RunMode = RunMode.Async)]
+		[RequireUserRole(GuildRoles.WIP)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> StopStage()
 		{

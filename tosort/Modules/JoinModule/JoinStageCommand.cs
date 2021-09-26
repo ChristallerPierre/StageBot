@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace StageBot.Modules.JoinModule
 		[Name(SCENE)]
 		[Command(STAGE, RunMode = RunMode.Async)]
 		[Alias(SCENE)]
+		[RequireUserRole(GuildRoles.PAMPA_TL)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage(string inputStageName)
 		{
@@ -26,6 +29,7 @@ namespace StageBot.Modules.JoinModule
 		[Name(SCENE)]
 		[Command(STAGE, RunMode = RunMode.Async)]
 		[Alias(SCENE)]
+		[RequireUserRole(GuildRoles.PAMPA_TL)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage()
 		{

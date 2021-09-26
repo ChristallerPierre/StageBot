@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Options;
+using StageBot.Controller;
 using StageBot.Services;
 using System;
 using System.Threading.Tasks;

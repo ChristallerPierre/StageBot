@@ -1,6 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using StageBot.Controller;
+using StageBot.Controller.Precondition;
+using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace StageBot.Modules.JoinModule
 
 		[Name(START)]
 		[Command(START, RunMode = RunMode.Async)]
+		[RequireUserRole(GuildRoles.PAMPA_TL)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> StartStage(string inputTopic)
 		{

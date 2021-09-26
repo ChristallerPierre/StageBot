@@ -6,6 +6,7 @@ namespace StageBot.Infra.Configuration
 {
 	public class GuildRoles
 	{
-		public const string ROLE = "Pampa TL";
+		public const string PAMPA_TL = "Pampa TL";
+		public const string WIP = "WIP";
 	}
 }
