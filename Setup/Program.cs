@@ -22,8 +22,6 @@ namespace StageBot.Setup
 		{
 			LogService.Setup();
 			try {
-				var secretsPath = Path.Combine(Directory.GetCurrentDirectory(), "secrets.json");
-
 				var configBuilder = new ConfigurationBuilder();
 				var appAssembly = Assembly.GetExecutingAssembly();
 				configBuilder.AddUserSecrets(appAssembly);
