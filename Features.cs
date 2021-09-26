@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StageBot
+﻿namespace StageBot
 {
 	class Features
 	{
@@ -20,5 +16,15 @@ namespace StageBot
 		// todo : /commands
 
 		// todo : [RequireBotPermission] pour vérifier que le bot à les droits avant d'exécuter une commande
+
+		/*
+		 * join -> forbidden
+		 * ReplyAsync(erreur)
+		 * log on request received
+		 * start with ongoing scene -> edit title
+		 * edit command -> re-run it
+		 * remove reply on unknown command
+		 * !start <input> when not connected -> connect then start
+		*/
 	}
 }
