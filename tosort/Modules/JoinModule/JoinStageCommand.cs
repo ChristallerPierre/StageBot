@@ -14,7 +14,7 @@ namespace StageBot.Modules.JoinModule
 	{
 		public const string STAGE = "stage";
 		public const string SCENE = "scene";
-		public const string CMD_DESC = "!scene <nom de la scène> pour que le bot rejoigne le channel de la scène précisée.";
+		public const string CMD_DESC = "!scene <nom de la scène> ou !stage <nom de la scène> pour que le bot rejoigne le channel de la scène (si précisée).";
 
 		[Name(SCENE)]
 		[Command(STAGE, RunMode = RunMode.Async)]

@@ -10,7 +10,7 @@ namespace StageBot.Controller.HelpModule
 	{
 		public const string HELP = "help";
 		public const string QUESTION_MARK = "?";
-		public const string CMD_DESC = "!help pour afficher ce message.";
+		public const string CMD_DESC = "!? ou !help pour afficher ce message.";
 
 		IHelpInteractor _interactor;
 

@@ -11,7 +11,7 @@ namespace StageBot.Modules.JoinModule
 	{
 		public const string EDIT = "edit";
 		public const string TITRE = "titre";
-		public const string CMD_DESC = "!titre <nouveau titre> pour changer le titre de la présentation.";
+		public const string CMD_DESC = "!edit <nouveau titre> ou !titre <nouveau titre> pour changer le titre de la présentation.";
 
 		[Name(EDIT)]
 		[Command(EDIT, RunMode = RunMode.Async)]

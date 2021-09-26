@@ -11,12 +11,12 @@ namespace StageBot.Modules.JoinModule
 	{
 		public const string EXIT = "exit";
 		public const string LEAVE = "leave";
-		public const string CMD_DESC = "!exit pour faire sortir le bot du channel vocal";
+		public const string CMD_DESC = "!exit ou !leave pour faire sortir le bot du channel vocal";
 
 		[Name(EXIT)]
 		[Command(EXIT, RunMode = RunMode.Async)]
 		[Alias(LEAVE)]
-		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
+		[RequireUserRole(new[] { GuildRoles.WIP })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Exit()
 		{
