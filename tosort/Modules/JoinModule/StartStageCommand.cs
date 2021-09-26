@@ -15,7 +15,8 @@ namespace StageBot.Modules.JoinModule
 
 		[Name(START)]
 		[Command(START, RunMode = RunMode.Async)]
-		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
+		[RequireChannel(GuildChannel.BOT_CHAN)]
+		//[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> StartStage(string inputTopic)
 		{

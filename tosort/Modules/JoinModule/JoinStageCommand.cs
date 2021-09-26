@@ -18,7 +18,8 @@ namespace StageBot.Modules.JoinModule
 		[Name(SCENE)]
 		[Command(STAGE, RunMode = RunMode.Async)]
 		[Alias(SCENE)]
-		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
+		[RequireChannel(GuildChannel.BOT_CHAN)]
+		//[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage(string inputStageName)
 		{
@@ -28,7 +29,8 @@ namespace StageBot.Modules.JoinModule
 		[Name(SCENE)]
 		[Command(STAGE, RunMode = RunMode.Async)]
 		[Alias(SCENE)]
-		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
+		[RequireChannel(GuildChannel.BOT_CHAN)]
+		//[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Stage()
 		{

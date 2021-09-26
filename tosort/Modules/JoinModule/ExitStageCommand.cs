@@ -16,7 +16,8 @@ namespace StageBot.Modules.JoinModule
 		[Name(EXIT)]
 		[Command(EXIT, RunMode = RunMode.Async)]
 		[Alias(LEAVE)]
-		[RequireUserRole(new[] { GuildRoles.WIP })]
+		[RequireChannel(GuildChannel.BOT_CHAN)]
+		//[RequireUserRole(new[] { GuildRoles.WIP })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Exit()
 		{

@@ -2,6 +2,7 @@
 using Discord.Commands;
 using Discord.WebSocket;
 using Serilog;
+using StageBot.Infra;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace StageBot.Services
 		public static string ReadCommandContext(ICommandContext context, string commandName, IResult result = null)
 		{
 			var channel = context.Channel.Name;
-			var usertag = context.User.Username + "#" + context.User.Discriminator;
+			var usertag = UserHelper.GetUserTag(context);
 			var messageContent = context.Message.Content;
 			var guild = context.Guild.Name;
 			var user = context.User as SocketGuildUser;

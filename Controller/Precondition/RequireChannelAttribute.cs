@@ -1,34 +1,33 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using StageBot.Infra;
-using StageBot.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Controller.Precondition
 {
-	public class RequireUserRoleAttribute : PreconditionAttribute
+	public class RequireChannelAttribute : PreconditionAttribute
 	{
-		private readonly string[] _names;
+		private readonly string _name;
 
-		public RequireUserRoleAttribute(string name) => _names = new[] { name };
-
-		public RequireUserRoleAttribute(string[] names) => _names = names;
+		public RequireChannelAttribute(string name)
+		{
+			_name = name;
+		}
 
 		public override Task<PreconditionResult> CheckPermissionsAsync(ICommandContext context, CommandInfo command, IServiceProvider services)
 		{
 			try {
 				if (context.User is SocketGuildUser user) {
-					if (user.Roles.Any(r => _names.Contains(r.Name)))
+					if (context.Channel.Name == _name)
 						return Task.FromResult(PreconditionResult.FromSuccess());
-					return Task.FromResult(PreconditionResult.FromError($"{UserHelper.GetUserTag(context)} tried to execute the command {context.Message.Content} without the role {_names}"));
+					else
+						return Task.FromResult(PreconditionResult.FromError($"{UserHelper.GetUserTag(context)} tried to execute the command {context.Message.Content} in channel {context.Channel.Name }"));
 				}
 				return Task.FromResult(PreconditionResult.FromError("You must be in a guild to run this command."));
 			} catch (Exception ex) {
-				LogService.Error(nameof(RequireUserRoleAttribute), LogService.ERROR, ex);
 				return Task.FromResult(PreconditionResult.FromError(ex));
 			}
 		}
