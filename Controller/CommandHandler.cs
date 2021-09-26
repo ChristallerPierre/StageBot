@@ -43,7 +43,7 @@ namespace StageBot.Services
 			return Task.CompletedTask;
 		}
 
-		// todo : maybe dont keep these
+		// todo : maybe remove these events
 
 		private async Task OnMessageCommandExecuted(SocketMessageCommand command)
 		{

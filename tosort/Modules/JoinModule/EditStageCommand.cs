@@ -11,7 +11,7 @@ namespace StageBot.Modules.JoinModule
 	public class EditStageCommand : ModuleBase<SocketCommandContext>
 	{
 		[Command(CommandList.EDIT, RunMode = RunMode.Async)]
-		[Summary("Demande au bot de rejoindre la scène")]
+		//[Summary("Demande au bot de rejoindre la scène")]
 		[Name(CommandList.EDIT)]
 		[Alias(CommandList.TITRE)]
 		public async Task<RuntimeResult> EditTopic(string param)
