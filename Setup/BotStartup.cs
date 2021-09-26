@@ -25,9 +25,9 @@ namespace StageBot.Setup
 		{
 			_client = new DiscordSocketClient();
 			_client.Log += LogService.Log;
-			_client.Connected += StartCommandHandler;
-			_client.Disconnected += StopCommandHandler;
-			_client.Ready += ClientReady;
+			_client.Connected += OnClientConnected;
+			_client.Disconnected += OnClientDisconnected;
+			_client.Ready += OnClientReady;
 
 			await _client.LoginAsync(TokenType.Bot, _botToken);
 			await _client.StartAsync();
@@ -36,7 +36,7 @@ namespace StageBot.Setup
 			await Task.Delay(-1);
 		}
 
-		public async Task StartCommandHandler()
+		public async Task OnClientConnected()
 		{
 			var serviceConfig = new CommandServiceConfig();
 			var commandService = new CommandService(serviceConfig);
@@ -44,16 +44,15 @@ namespace StageBot.Setup
 			await handler.InitializeAsync();
 		}
 
-		public async Task StopCommandHandler(Exception exception)
+		public Task OnClientDisconnected(Exception exception)
 		{
-			var message = new LogMessage(LogSeverity.Error, nameof(StopCommandHandler), "Bot disconnected", exception);
-			await LogService.Log(message);
+			LogService.Warn(nameof(OnClientDisconnected), "Bot disconnected", exception);
+			return Task.CompletedTask;
 		}
 
-		public async Task ClientReady()
+		public async Task OnClientReady()
 		{
-			var message = new LogMessage(LogSeverity.Info, nameof(ClientReady), "Client is ready");
-			await LogService.Log(message);
+			LogService.Info(nameof(OnClientReady), "Client is ready");
 			// todo : have the bot say hello when starting
 		}
 	}

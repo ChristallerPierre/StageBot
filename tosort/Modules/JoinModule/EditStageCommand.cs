@@ -1,8 +1,8 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
 using StageBot.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
@@ -25,15 +25,19 @@ namespace StageBot.Modules.JoinModule
 
 		public async Task<RuntimeResult> ExecuteCommand(string param)
 		{
-			// todo trycatch
-			// handle params without quotes
-			var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
-			await stageChannel.ModifyInstanceAsync(prop => prop.Topic = param);
+			try {
+				// handle params without quotes
+				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
+				await stageChannel.ModifyInstanceAsync(prop => prop.Topic = param);
 
-			var message = $"*a changé le sujet de la scène {stageChannel.Name} en {param}.*";
-			await ReplyAsync(message);
+				var message = $"*a changé le sujet de la scène {stageChannel.Name} en {param}.*";
+				await ReplyAsync(message);
 
-			return new CommandResult(null, new LogMessage(LogSeverity.Info, nameof(EditStageCommand), $"Topic of channel {stageChannel.Name} updated to {param}"));
+				return new CommandResult(null, LogService.TOPIC_UPDATED);
+			} catch (Exception ex) {
+				LogService.Error(nameof(EditStageCommand), LogService.ERROR, ex);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
+			}
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace StageBot.Modules
 {
 	public class CommandResult : RuntimeResult
 	{
-		public CommandResult(CommandError? error, LogMessage log) : base(error, log.Message)
+		public CommandResult(CommandError? error, string message) : base(error, message)
 		{ }
 	}
 }

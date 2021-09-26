@@ -1,5 +1,4 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
@@ -48,16 +47,10 @@ namespace StageBot.Modules.JoinModule
 				await ReplyAsync(message);
 
 				await stageChannel.BecomeSpeakerAsync();
-				return new CommandResult(
-					null,
-					new LogMessage(
-						LogSeverity.Info,
-						nameof(JoinStageCommand),
-						LogService.SUCCESS));
+				return new CommandResult(null, LogService.SUCCESS);
 			} catch (Exception e) {
-				var logMessage = new LogMessage(LogSeverity.Error, nameof(JoinStageCommand), LogService.ERROR, e);
-				await LogService.Log(logMessage);
-				return new CommandResult(CommandError.Exception, logMessage);
+				LogService.Error(nameof(JoinStageCommand), LogService.ERROR, e);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}
 		}
 
@@ -65,7 +58,7 @@ namespace StageBot.Modules.JoinModule
 		private async Task OnAudioDisconnected(Exception e)
 		{
 			ContextService.IdStageChannel = 0;
-			await LogService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LogService.ERROR, e));
+			LogService.Error(nameof(OnAudioDisconnected), LogService.ERROR, e);
 		}
 
 		private SocketStageChannel GetStageChannel(string inputStageName)

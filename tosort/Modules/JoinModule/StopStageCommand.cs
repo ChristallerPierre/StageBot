@@ -1,5 +1,4 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
 using StageBot.Services;
@@ -32,9 +31,10 @@ namespace StageBot.Modules.JoinModule
 				var message = $"*a arrêté la présentation sur la scène {stageChannel.Name}.*";
 				await ReplyAsync(message);
 
-				return new CommandResult(null, new LogMessage(LogSeverity.Info, nameof(StopStageCommand), $"Stage channel {stageChannel.Name} stopped."));
+				return new CommandResult(null, LogService.SUCCESS);
 			} catch (Exception e) {
-				return new CommandResult(CommandError.Exception, new LogMessage(LogSeverity.Error, nameof(StopStageCommand), $"Exception while trying to stop a channel", e));
+				LogService.Error(nameof(StartStageCommand), LogService.ERROR, e);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}
 		}
 	}

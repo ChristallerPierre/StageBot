@@ -39,7 +39,7 @@ namespace StageBot.Setup
 				IBotStartup main = services.GetService<IBotStartup>();
 				main.MainAsync().GetAwaiter().GetResult();
 			} catch (Exception e) {
-				LogService.Log(new LogMessage(LogSeverity.Critical, nameof(Main), "Fatal exception", e)).GetAwaiter().GetResult();
+				LogService.Fatal(nameof(Main), "Fatal exception", e);
 			}
 		}
 	}

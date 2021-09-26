@@ -19,16 +19,10 @@ namespace StageBot.Interactor
 			try {
 				var message = GetHelpMessage();
 				await command.ReplyAsync(message);
-				return new CommandResult(
-					null,
-					new LogMessage(
-						LogSeverity.Info,
-						nameof(DisplayHelpAsync),
-						LogService.SUCCESS));
+				return new CommandResult(null, LogService.SUCCESS);
 			} catch (Exception e) {
-				var logMessage = new LogMessage(LogSeverity.Error, nameof(DisplayHelpAsync), LogService.ERROR, e);
-				await LogService.Log(logMessage);
-				return new CommandResult(CommandError.Exception, logMessage);
+				LogService.Error(nameof(DisplayHelpAsync), LogService.ERROR, e);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}
 		}
 

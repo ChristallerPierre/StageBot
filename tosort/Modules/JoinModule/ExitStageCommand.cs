@@ -1,8 +1,8 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
 using StageBot.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
@@ -25,17 +25,22 @@ namespace StageBot.Modules.JoinModule
 
 		private async Task<RuntimeResult> ExecuteCommand()
 		{
-			if (ContextService.IdStageChannel == 0) {
-				// error
-			} else {
-				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
-				await stageChannel.DisconnectAsync();
+			try {
+				if (ContextService.IdStageChannel == 0) {
+					// error
+				} else {
+					var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
+					await stageChannel.DisconnectAsync();
 
-				var message = $"*a quitté la scène {stageChannel.Name}.*";
-				await ReplyAsync(message);
+					var message = $"*a quitté la scène {stageChannel.Name}.*";
+					await ReplyAsync(message);
+				}
+
+				return new CommandResult(null, LogService.SUCCESS);
+			} catch (Exception ex) {
+				LogService.Error(nameof(ExitStageCommand), LogService.ERROR, ex);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}
-
-			return new CommandResult(null, new LogMessage(LogSeverity.Info, nameof(ExitStageCommand), "ok"));
 		}
 	}
 }

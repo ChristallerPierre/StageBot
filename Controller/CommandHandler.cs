@@ -45,31 +45,28 @@ namespace StageBot.Controller
 
 		// todo : maybe remove these events
 
-		private async Task OnMessageCommandExecuted(SocketMessageCommand command)
+		private Task OnMessageCommandExecuted(SocketMessageCommand command)
 		{
-			await LogService.Log(new LogMessage(LogSeverity.Info, nameof(OnMessageCommandExecuted), LogService.SUCCESS));
+			LogService.Info(nameof(OnMessageCommandExecuted), LogService.SUCCESS);
+			return Task.CompletedTask;
 		}
 
-		private async Task OnUserCommandExecuted(SocketUserCommand command)
+		private Task OnUserCommandExecuted(SocketUserCommand command)
 		{
-			await LogService.Log(new LogMessage(LogSeverity.Info, nameof(OnUserCommandExecuted), LogService.SUCCESS));
+			LogService.Info(nameof(OnUserCommandExecuted), LogService.SUCCESS);
+			return Task.CompletedTask;
 		}
 
-		private async Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
+		private Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
 		{
 			var commandName = "command_name";
-			if (commandInfo.IsSpecified)
+			if (commandInfo.IsSpecified) {
 				commandName = commandInfo.Value.Name;
-			else
-				await LogService.Log(new LogMessage(
-	LogSeverity.Warning,
-	"OnCommandExecutedAsync",
-	"No commandInfo specified"));
-
-			await LogService.Log(new LogMessage(
-				LogSeverity.Info,
-				nameof(OnCommandExecutedAsync),
-				LogService.ReadCommandContext(context, commandName, result)));
+				var logmsg = LogService.CMD_EXECUTED + Environment.NewLine + LogService.ReadCommandContext(context, commandName, result);
+				LogService.Info(nameof(OnCommandExecutedAsync), logmsg);
+			} else
+				LogService.Warn(nameof(OnCommandExecutedAsync), LogService.MISSING_CMD);
+			return Task.CompletedTask;
 		}
 
 		private async Task OnMessageReceivedAsync(SocketMessage messageParam)
@@ -87,29 +84,35 @@ namespace StageBot.Controller
 				return;
 
 			var context = new SocketCommandContext(_client, message);
+			var commandName = GetCommandNameInInput(message);
 
-			if (HandleInexistantCommand(message))
+			if (HandleInexistantCommand(commandName))
 				await OnInexistantCommandReceived(message);
-			else
+			else {
+				var logmsg = LogService.CMD_RECEIVED + Environment.NewLine + LogService.ReadCommandContext(context, commandName);
+				LogService.Info(nameof(OnMessageReceivedAsync), logmsg);
 				await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
+			}
 			return;
 		}
 
-		private bool HandleInexistantCommand(SocketUserMessage message)
+		private bool HandleInexistantCommand(string commandName)
+		{
+			return !CommandDescription.Commands.Any(cmd => cmd.Aliases.Contains(commandName));
+		}
+
+		private string GetCommandNameInInput(SocketUserMessage message)
 		{
 			var commandWithoutCommandMark = message.Content.Remove(0, 1);
 			var splits = commandWithoutCommandMark.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			return !CommandDescription.Commands.Any(cmd => cmd.Aliases.Contains(splits[0]));
+			return splits[0];
 		}
 
 		private async Task OnInexistantCommandReceived(SocketUserMessage message)
 		{
 			var logMessage = $"{LogService.UNKNOWN_COMMAND} : {message.Content}";
 
-			await LogService.Log(new LogMessage(
-				LogSeverity.Info,
-				nameof(OnInexistantCommandReceived),
-				logMessage));
+			LogService.Info(nameof(OnInexistantCommandReceived), logMessage);
 			await message.ReplyAsync(LogService.UNKNOWN_COMMAND_HELP);
 		}
 	}

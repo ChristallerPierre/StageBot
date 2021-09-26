@@ -1,12 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
-using StageBot.Controller;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
 using StageBot.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
@@ -27,16 +24,21 @@ namespace StageBot.Modules.JoinModule
 
 		private async Task<RuntimeResult> ExecuteCommand(string inputTopic)
 		{
-			// todo : handle error case
-			// -> topic empty
-			// -> not connected
-			var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
-			await stageChannel.StartStageAsync(inputTopic, StagePrivacyLevel.GuildOnly);
+			try {
+				// todo : handle error case
+				// -> topic empty
+				// -> not connected
+				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
+				await stageChannel.StartStageAsync(inputTopic, StagePrivacyLevel.GuildOnly);
 
-			var message = $"*a démarré la présentation sur la scène {stageChannel.Name}.*";
-			await ReplyAsync(message);
+				var message = $"*a démarré la présentation sur la scène {stageChannel.Name}.*";
+				await ReplyAsync(message);
 
-			return new CommandResult(null, new LogMessage(LogSeverity.Info, nameof(EditStageCommand), "ok"));
+				return new CommandResult(null, LogService.SUCCESS);
+			} catch (Exception ex) {
+				LogService.Error(nameof(StartStageCommand), LogService.ERROR, ex);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
+			}
 		}
 	}
 }

@@ -38,16 +38,10 @@ namespace StageBot.Modules
 				var selectedChannel = await GetRequestedChannelName(inputChannelName);
 				if (selectedChannel != null)
 					return await HandleChannelFoundAsync(selectedChannel);
-				return new CommandResult(
-					CommandError.ObjectNotFound,
-					new LogMessage(
-						LogSeverity.Info,
-						nameof(JoinChannelCommand),
-						LogService.CHANNEL_NOT_FOUND));
+				return new CommandResult(CommandError.ObjectNotFound, LogService.CHANNEL_NOT_FOUND);
 			} catch (Exception e) {
-				var logMessage = new LogMessage(LogSeverity.Error, nameof(JoinChannelCommand), LogService.ERROR, e);
-				await LogService.Log(logMessage);
-				return new CommandResult(CommandError.Exception, logMessage);
+				LogService.Error(nameof(JoinChannelCommand), LogService.ERROR, e);
+				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}
 		}
 
@@ -70,7 +64,7 @@ namespace StageBot.Modules
 
 		private async Task<string> SendErrorMessage()
 		{
-			await LogService.Log(new LogMessage(LogSeverity.Warning, nameof(SendErrorMessage), LogService.MISING_CHANNEL_NAME));
+			LogService.Warn(nameof(SendErrorMessage), LogService.MISING_CHANNEL_NAME);
 			await ReplyAsync(LogService.MISING_CHANNEL_NAME);
 			return null;
 		}
@@ -99,17 +93,14 @@ namespace StageBot.Modules
 				.First(chan => chan.Name == selectedChannel)
 				.ConnectAsync();
 			audio.Disconnected += OnAudioDisconnected;
-			return new CommandResult(
-				null,
-				new LogMessage(
-					LogSeverity.Info,
-					nameof(HandleChannelFoundAsync),
-					LogService.SUCCESS));
+			return new CommandResult(null, LogService.SUCCESS);
 		}
 
-		private async Task OnAudioDisconnected(Exception e)
+		private Task OnAudioDisconnected(Exception e)
 		{
-			await LogService.Log(new LogMessage(LogSeverity.Error, nameof(OnAudioDisconnected), LogService.ERROR, e));
+			// auto reconnect ?
+			LogService.Error(nameof(OnAudioDisconnected), LogService.ERROR, e);
+			return Task.CompletedTask;
 		}
 	}
 }
