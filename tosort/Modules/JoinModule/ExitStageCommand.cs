@@ -16,7 +16,7 @@ namespace StageBot.Modules.JoinModule
 		[Name(EXIT)]
 		[Command(EXIT, RunMode = RunMode.Async)]
 		[Alias(LEAVE)]
-		[RequireUserRole(GuildRoles.PAMPA_TL)]
+		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Exit()
 		{

@@ -22,7 +22,7 @@ namespace StageBot.Controller.HelpModule
 		[Name(HELP)]
 		[Command(HELP)]
 		[Alias(QUESTION_MARK)]
-		[RequireUserRole(GuildRoles.PAMPA_TL)]
+		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Help()
 		{

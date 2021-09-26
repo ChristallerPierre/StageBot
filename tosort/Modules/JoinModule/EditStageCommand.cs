@@ -16,7 +16,7 @@ namespace StageBot.Modules.JoinModule
 		[Name(EDIT)]
 		[Command(EDIT, RunMode = RunMode.Async)]
 		[Alias(TITRE)]
-		[RequireUserRole(GuildRoles.PAMPA_TL)]
+		[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> EditTopic(string param)
 		{
