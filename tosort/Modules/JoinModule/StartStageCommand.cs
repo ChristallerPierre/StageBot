@@ -23,7 +23,7 @@ namespace StageBot.Modules.JoinModule
 			return await ExecuteCommand(inputTopic);
 		}
 
-		private async Task<RuntimeResult> ExecuteCommand(string inputTopic)
+		private async Task<RuntimeResult> ExecuteCommand([Remainder] string inputTopic)
 		{
 			try {
 				// todo : handle error case

@@ -19,7 +19,7 @@ namespace StageBot.Modules.JoinModule
 		[RequireChannel(GuildChannel.BOT_CHAN)]
 		//[RequireUserRole(new[] { GuildRoles.PAMPA_MOD, GuildRoles.PAMPA_RL })]
 		[Summary(CMD_DESC)]
-		public async Task<RuntimeResult> EditTopic(string param)
+		public async Task<RuntimeResult> EditTopic([Remainder] string param)
 		{
 			return await ExecuteCommand(param);
 		}
