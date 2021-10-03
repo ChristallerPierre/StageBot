@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
+using StageBot.Interactor.Services;
 using StageBot.Services;
 using System;
 using System.Threading.Tasks;
@@ -27,7 +28,8 @@ namespace StageBot.Modules.JoinModule
 		public async Task<RuntimeResult> ExecuteCommand(string param)
 		{
 			try {
-				// handle params without quotes
+				param = TopicFormatter.ReformatTopic(param);
+
 				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
 				await stageChannel.ModifyInstanceAsync(prop => prop.Topic = param);
 

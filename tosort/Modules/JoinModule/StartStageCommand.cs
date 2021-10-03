@@ -2,6 +2,7 @@
 using Discord.Commands;
 using StageBot.Controller.Precondition;
 using StageBot.Infra.Configuration;
+using StageBot.Interactor.Services;
 using StageBot.Services;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace StageBot.Modules.JoinModule
 	{
 		public const string START = "start";
 		public const string CMD_DESC = "!start <titre> pour démarrer la présentation sur la scène.";
-		public const string ERR_PARAM_NB = "Veuillez faire la commande du titre de la conférence";
+		public const string ERR_PARAM_NB = "Veuillez faire suivre la commande par le titre voulu pour la conférence";
+		public const string ERR_BOT_DISCONNECTED = "Le bot doit rejoindre une scène (avec la commande !scene) avant de pouvoir y démarrer une conférence";
 
 		[Name(START)]
 		[Command(START, RunMode = RunMode.Async)]
@@ -44,13 +46,13 @@ namespace StageBot.Modules.JoinModule
 				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
 
 				if (IsBotConnectedToStage()) {
+					inputTopic = TopicFormatter.ReformatTopic(inputTopic);
 					await stageChannel.StartStageAsync(inputTopic, StagePrivacyLevel.GuildOnly);
 					var messageSuccess = $"*a démarré la présentation sur la scène {stageChannel.Name}.*";
 					await ReplyAsync(messageSuccess);
 					return new CommandResult(null, LogService.SUCCESS);
 				} else {
-					var messageFail = $"Le bot doit rejoindre une scène (avec la commande !scene) avant de pouvoir y démarrer une conférence";
-					await ReplyAsync(messageFail);
+					await ReplyAsync(ERR_BOT_DISCONNECTED);
 					return new CommandResult(CommandError.Unsuccessful, LogService.BAD_USAGE);
 				}
 

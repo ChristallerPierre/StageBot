@@ -1,14 +1,12 @@
 ﻿using Discord.Commands;
-using System.Linq;
+using StageBot.Controller;
+using StageBot.Controller.HelpModule;
 using StageBot.Modules;
+using StageBot.Services;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StageBot.Services;
-using Discord;
-using StageBot.Controller.HelpModule;
-using StageBot.Controller;
 
 namespace StageBot.Interactor
 {
