@@ -1,6 +1,5 @@
 ﻿using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using Serilog;
 using StageBot.Infra;
 using System;
@@ -15,6 +14,7 @@ namespace StageBot.Services
 	{
 		public const string ERROR = "Error";
 		public const string SUCCESS = "Success";
+		public const string BAD_USAGE = "Bad usage";
 		public const string CHANNEL_NOT_FOUND = "Channel not found";
 		public const string UNKNOWN_COMMAND = "Unknown comand";
 		public const string UNKNOWN_COMMAND_HELP = "Commande non-reconnue. !help pour afficher la liste des commandes";
@@ -29,25 +29,20 @@ namespace StageBot.Services
 			var channel = context.Channel.Name;
 			var usertag = UserHelper.GetUserTag(context);
 			var messageContent = context.Message.Content;
-			var guild = context.Guild.Name;
-			var user = context.User as SocketGuildUser;
-			var roles = string.Join(", ", user.Roles.Select(r => r.Name));
-			var logResult = result is null ? ReadResult(result) : string.Empty;
+			//var guild = context.Guild.Name;
+			var logResult = result is null ? string.Empty : ReadResult(result);
 
-			return @$"Guild {guild}{Environment.NewLine}
-				Command {commandName}{Environment.NewLine}
-				{logResult}
-				Channel {channel}{Environment.NewLine}
-				User {usertag}{Environment.NewLine}
-				Roles {roles}{Environment.NewLine}
-				Message {messageContent}";
+			// todo : reply in case of errors
+
+			//Guild {guild}
+			return @$"{logResult}Channel {channel} ; User {usertag} ; Message {messageContent}";
 		}
 
 		private static string ReadResult(IResult result)
 		{
-			return $"Success {result.IsSuccess}{Environment.NewLine}" +
-				$"ReturnCode {result.Error}{Environment.NewLine}" +
-				$"ReturnMessage {result.ErrorReason}{Environment.NewLine}";
+			return
+@$"Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; 
+";
 		}
 
 		public static void Setup()
