@@ -3,13 +3,12 @@ using Discord.Commands;
 using Discord.WebSocket;
 using StageBot.Services;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace StageBot.Controller
 {
-	public class CommandHandler
+	public class CommandHandler : IDisposable
 	{
 		private readonly DiscordSocketClient _client;
 		private readonly CommandService _command;
@@ -32,6 +31,16 @@ namespace StageBot.Controller
 			_command.CommandExecuted += OnCommandExecutedAsync;
 			_client.MessageCommandExecuted += _socketClientEvents.OnMessageCommandExecuted;
 			_client.UserCommandExecuted += _socketClientEvents.OnUserCommandExecuted;
+		}
+
+		public void Dispose()
+		{
+			_client.MessageReceived -= _socketClientEvents.OnMessageReceivedAsync;
+			_client.MessageUpdated -= _socketClientEvents.OnMessageUpdated;
+			_command.CommandExecuted -= OnCommandExecutedAsync;
+			_client.MessageCommandExecuted -= _socketClientEvents.OnMessageCommandExecuted;
+			_client.UserCommandExecuted -= _socketClientEvents.OnUserCommandExecuted;
+			_client.Dispose();
 		}
 
 		private Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
