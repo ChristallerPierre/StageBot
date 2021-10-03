@@ -3,7 +3,7 @@
 	class Features
 	{
 		/*
-		 * Nouvelles fonctionnalités :
+		 * TODO - Nouvelles fonctionnalités :
 		 *	- planification des changements de titres -> lister, ajouter et supprimer une planification
 		 *	- synthèse vocal pour message à diffuser (message, delai entre deux diffusions)
 		 *	- messages d'erreur quand commande executée sans paramètre / en cas d'erreur d'exec
@@ -12,10 +12,12 @@
 		 *	- start with ongoing scene -> edit title
 		 *	- !start <input> when not connected -> connect then start
 		 * 
-		 * Bugfixes :
+		 * TODO - Bugfixes :
+		 *	 - bugs listed on various parts of the app
 		 *	 - fix time-out sur connexion audio
 		 *	 - ne pas log les OpCode quand connecté à un channel vocal
 		 *	 - join -> forbidden
+		 *	 - crash during night, before 3/10 14h45
 		 */
 	}
 }

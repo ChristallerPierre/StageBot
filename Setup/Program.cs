@@ -8,11 +8,8 @@ using StageBot.Services;
 using System;
 using System.Reflection;
 
-// todo : crash before 3/10 14h45
-
 /// <summary>
-/// Rien d'original, juste un peu de jugeote et pompé sans honte de cette doc pas à jour
-/// https://docs.stillu.cc/guides/introduction/intro.html
+/// Thanks to this doc : https://docs.stillu.cc/guides/introduction/intro.html (doesn't cover the functionalities of Discord.Net.Labs, which is a fork of Discord.Net)
 /// </summary>
 namespace StageBot.Setup
 {

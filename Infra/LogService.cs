@@ -32,8 +32,6 @@ namespace StageBot.Services
 			//var guild = context.Guild.Name;
 			var logResult = result is null ? string.Empty : ReadResult(result);
 
-			// todo : reply in case of errors
-
 			//Guild {guild}
 			return @$"{logResult}Channel {channel} ; User {usertag} ; Message {messageContent}";
 		}
