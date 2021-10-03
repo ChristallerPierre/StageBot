@@ -51,6 +51,9 @@ namespace StageBot.Modules.JoinModule
 				await stageChannel.BecomeSpeakerAsync();
 				return new CommandResult(null, LogService.SUCCESS);
 			} catch (Exception e) {
+				// todo : handle System.Threading.Tasks.TaskCanceledException: A task was canceled.
+				//		at Discord.WebSocket.SocketGuild.ConnectAudioAsync(UInt64 channelId, Boolean selfDeaf, Boolean selfMute, Boolean external)
+
 				LogService.Error(nameof(JoinStageCommand), LogService.ERROR, e);
 				return new CommandResult(CommandError.Exception, LogService.ERROR);
 			}

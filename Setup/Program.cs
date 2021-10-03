@@ -1,5 +1,4 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +7,8 @@ using StageBot.Interactor;
 using StageBot.Services;
 using System;
 using System.Reflection;
+
+// todo : crash before 3/10 14h45
 
 /// <summary>
 /// Rien d'original, juste un peu de jugeote et pompé sans honte de cette doc pas à jour
