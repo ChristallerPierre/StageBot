@@ -33,14 +33,12 @@ namespace StageBot.Services
 			var logResult = result is null ? string.Empty : ReadResult(result);
 
 			//Guild {guild}
-			return @$"{logResult}Channel {channel} ; User {usertag} ; Message {messageContent}";
+			return $"{logResult}Channel {channel} ; User {usertag} ; Message {messageContent}";
 		}
 
 		private static string ReadResult(IResult result)
 		{
-			return
-@$"Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; 
-";
+			return $"Success {result.IsSuccess} ; ReturnCode {result.Error} ; ReturnMessage {result.ErrorReason} ; ";
 		}
 
 		public static void Setup()
