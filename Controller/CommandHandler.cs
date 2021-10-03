@@ -46,12 +46,13 @@ namespace StageBot.Controller
 		private Task OnCommandExecutedAsync(Optional<CommandInfo> commandInfo, ICommandContext context, IResult result)
 		{
 			var commandName = "command_name";
-			if (commandInfo.IsSpecified) {
-				commandName = commandInfo.Value.Name;
-				var logmsg = LogService.CMD_EXECUTED + Environment.NewLine + LogService.ReadCommandContext(context, commandName, result);
-				LogService.Info(nameof(OnCommandExecutedAsync), logmsg);
-			} else
-				LogService.Warn(nameof(OnCommandExecutedAsync), LogService.MISSING_CMD);
+			//if (commandInfo.IsSpecified)
+			//{
+			commandName = commandInfo.Value.Name;
+			var logmsg = LogService.CMD_EXECUTED + Environment.NewLine + LogService.ReadCommandContext(context, commandName, result);
+			LogService.Info(nameof(OnCommandExecutedAsync), logmsg);
+			//} else
+			//	LogService.Warn(nameof(OnCommandExecutedAsync), LogService.MISSING_CMD);
 			return Task.CompletedTask;
 		}
 	}
