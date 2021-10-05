@@ -1,5 +1,5 @@
 ﻿using StageBot.Controller.HelpModule;
-using StageBot.Modules;
+using StageBot.Controller.PlanningModule;
 using StageBot.Modules.JoinModule;
 using System.Collections.Generic;
 
@@ -15,6 +15,7 @@ namespace StageBot.Controller
 			new CommandDescription(EditStageCommand.EDIT, new []{ EditStageCommand.EDIT, EditStageCommand.TITRE }, EditStageCommand.CMD_DESC),
 			//new CommandDescription(JoinChannelCommand.JOIN, new []{ JoinChannelCommand.JOIN }, JoinChannelCommand.CMD_DESC),
 			new CommandDescription(ExitStageCommand.EXIT, new []{ ExitStageCommand.EXIT, ExitStageCommand.LEAVE }, ExitStageCommand.CMD_DESC),
+			new CommandDescription(TopicPlanningCommand.PLAN, new []{ TopicPlanningCommand.PLAN }, TopicPlanningCommand.CMD_DESC),
 		};
 
 		public string Name { get; }

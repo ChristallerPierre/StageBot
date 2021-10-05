@@ -6,6 +6,7 @@ using StageBot.Controller;
 using StageBot.Interactor;
 using StageBot.Services;
 using System;
+using System.IO.Abstractions;
 using System.Reflection;
 
 /// <summary>
@@ -26,16 +27,19 @@ namespace StageBot.Setup
 
 				IServiceProvider services = new ServiceCollection()
 					.Configure<Secrets>(configuration.GetSection(nameof(Secrets)))
+					//.AddLogging()
 					.AddOptions()
 					.AddSingleton<IBotStartup, BotStartup>()
 					.AddSingleton<CommandHandler>()
 					.AddSingleton<DiscordSocketClient>()
 					.AddSingleton<CommandService>()
 					.AddScoped<IHelpInteractor, HelpInteractor>()
+					.AddScoped<ITopicPlanningInteractor, TopicPlanningInteractor>()
+					.AddScoped<IFileSystem, FileSystem>()
 					.BuildServiceProvider();
 
 				IBotStartup main = services.GetService<IBotStartup>();
-				main.MainAsync().GetAwaiter().GetResult();
+				main.StartDiscordHandler().GetAwaiter().GetResult();
 			} catch (Exception e) {
 				LogService.Fatal(nameof(Main), "Fatal exception", e);
 			}
