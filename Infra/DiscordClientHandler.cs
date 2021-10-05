@@ -22,19 +22,31 @@ namespace StageBot.Infra
 			_cancelTokenSource = new CancellationTokenSource();
 		}
 
-		public async Task Connect()
+		public async Task<bool> Connect()
 		{
-			_client = new DiscordSocketClient();
-			_client.Log += LogService.Log;
-			_client.Connected += OnClientConnected;
-			_client.Disconnected += _param.BotStartup.OnClientDisconnected;
-			_client.Ready += OnClientReady;
+			try {
+				_client = new DiscordSocketClient();
+				_client.Log += LogService.Log;
+				_client.Connected += OnClientConnected;
+				_client.Disconnected += OnClientDisconnected;
+				_client.Ready += OnClientReady;
 
-			await _client.LoginAsync(TokenType.Bot, _param.BotToken);
-			await _client.StartAsync();
+				await _client.LoginAsync(TokenType.Bot, _param.BotToken);
+				await _client.StartAsync();
 
-			// block this task until requested
-			await Task.Delay(-1, _cancelTokenSource.Token);
+				// block this task until requested
+				await Task.Delay(-1, _cancelTokenSource.Token);
+				return true;
+			} catch (Exception ex) {
+				LogService.Error(nameof(DiscordClientHandler), "Error in Connect", ex);
+				return false;
+			}
+		}
+
+		public Task OnClientDisconnected(Exception exception)
+		{
+			LogService.Warn(nameof(OnClientDisconnected), "Bot disconnected", exception);
+			return Task.CompletedTask;
 		}
 
 		public async Task OnClientConnected()
@@ -45,23 +57,24 @@ namespace StageBot.Infra
 			await _commandHandler.InitializeAsync();
 		}
 
-		public async Task OnClientReady()
+		public Task OnClientReady()
 		{
 			LogService.Info(nameof(OnClientReady), "Client is ready");
 			// todo : have the bot say hello when starting
+			return Task.CompletedTask;
 		}
 
 		public void Dispose()
 		{
-			_commandHandler.Dispose();
 			_cancelTokenSource.Cancel();
 			_client.Log -= LogService.Log;
 			_client.Connected -= OnClientConnected;
-			_client.Disconnected -= _param.BotStartup.OnClientDisconnected;
+			_client.Disconnected -= OnClientDisconnected;
 			_client.Ready -= OnClientReady;
 
-			_client.Dispose();
-			_cancelTokenSource.Dispose();
+			_commandHandler?.Dispose();
+			_client?.Dispose();
+			_cancelTokenSource?.Dispose();
 		}
 	}
 }

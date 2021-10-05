@@ -6,31 +6,31 @@ using System.Threading.Tasks;
 
 namespace StageBot.Setup
 {
-	public class BotStartup : IBotStartup
+	public class BotStartup : IBotStartup, IDisposable
 	{
-		private ClientHandlerParameters _handlerParameters;
 		private IDiscordClientHandler _clientHandler;
+		private readonly ClientHandlerParameters _handlerParameters;
 
 		public BotStartup(IOptions<Secrets> secrets, IServiceProvider serviceProvider)
 		{
 			_handlerParameters = new ClientHandlerParameters() {
-				BotStartup = this,
 				BotToken = secrets.Value.BotToken,
 				ServiceProvider = serviceProvider,
 			};
 		}
 
-		public async Task MainAsync()
+		public async Task StartDiscordHandler()
 		{
 			_clientHandler = new DiscordClientHandler(_handlerParameters);
-			await _clientHandler.Connect();
+			if (!await _clientHandler.Connect()) {
+				_clientHandler.Dispose();
+				await StartDiscordHandler();
+			}
 		}
 
-		public async Task OnClientDisconnected(Exception exception)
+		public void Dispose()
 		{
-			LogService.Warn(nameof(OnClientDisconnected), "Bot disconnected", exception);
-			_clientHandler.Dispose();
-			await MainAsync();
+			_clientHandler?.Dispose();
 		}
 	}
 }

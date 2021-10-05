@@ -31,6 +31,8 @@ namespace StageBot.Modules.JoinModule
 					// error
 				} else {
 					var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
+
+					// todo : unregister events
 					await stageChannel.DisconnectAsync();
 
 					var message = $"*a quitté la scène {stageChannel.Name}.*";

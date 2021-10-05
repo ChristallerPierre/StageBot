@@ -7,6 +7,5 @@ namespace StageBot.Infra
 	{
 		public string BotToken;
 		public IServiceProvider ServiceProvider;
-		public IBotStartup BotStartup;
 	}
 }

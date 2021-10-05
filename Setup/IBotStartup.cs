@@ -5,7 +5,6 @@ namespace StageBot.Setup
 {
 	public interface IBotStartup
 	{
-		Task MainAsync();
-		Task OnClientDisconnected(Exception exception);
+		Task StartDiscordHandler();
 	}
 }

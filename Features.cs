@@ -3,6 +3,10 @@
 	class Features
 	{
 		/*
+		 * TODO - tech debt :
+		 *  - make const names more obvious when it's a command name, alias ...
+		 *  - log in files at the same path
+		 * 
 		 * TODO - Nouvelles fonctionnalités :
 		 *	- planification des changements de titres -> lister, ajouter et supprimer une planification
 		 *	- pouvoir lister les titres précédents

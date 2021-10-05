@@ -5,6 +5,6 @@ namespace StageBot.Infra
 	public interface IDiscordClientHandler
 	{
 		void Dispose();
-		Task Connect();
+		Task<bool> Connect();
 	}
 }
