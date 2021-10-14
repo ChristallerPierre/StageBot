@@ -5,6 +5,7 @@ using Presentation.Configuration;
 using Presentation.Controller.Attribute;
 using Presentation.Controller.Handler;
 using Presentation.Controller.Interface;
+using Presentation.Interactor.Interface;
 using System;
 using System.Threading.Tasks;
 
@@ -15,6 +16,13 @@ namespace StageBot.Modules.JoinModule
 		public const string EXIT = "exit";
 		public const string LEAVE = "leave";
 		public const string CMD_DESC = "!exit ou !leave pour faire sortir le bot du channel vocal";
+
+		IExitStageInteractor _interactor;
+
+		public ExitStageCommand(IExitStageInteractor interactor)
+		{
+			_interactor = interactor;
+		}
 
 		[Name(EXIT)]
 		[Command(EXIT, RunMode = RunMode.Async)]
@@ -32,17 +40,12 @@ namespace StageBot.Modules.JoinModule
 			try {
 				if (ContextService.IdStageChannel == 0) {
 					// error
+					return new CommandResult(null, LogService.ERROR);
 				} else {
 					var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
 
-					// todo : unregister events
-					await stageChannel.DisconnectAsync();
-
-					var message = $"*a quitté la scène {stageChannel.Name}.*";
-					await ReplyAsync(message);
+					return await _interactor.Disconnect(this, stageChannel);
 				}
-
-				return new CommandResult(null, LogService.SUCCESS);
 			} catch (Exception ex) {
 				LogService.Error(nameof(ExitStageCommand), LogService.ERROR, ex);
 				return new CommandResult(CommandError.Exception, LogService.ERROR);
