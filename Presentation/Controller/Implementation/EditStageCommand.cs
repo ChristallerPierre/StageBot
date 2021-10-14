@@ -1,12 +1,9 @@
 ﻿using Discord.Commands;
 using Domain.Model;
-using Domain.Services;
 using Presentation.Configuration;
 using Presentation.Controller.Attribute;
-using Presentation.Controller.Handler;
 using Presentation.Controller.Interface;
 using Presentation.Interactor.Interface;
-using System;
 using System.Threading.Tasks;
 
 namespace Presentation.Controller.Implementation
