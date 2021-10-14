@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace StageBot.Presentation
+namespace Presentation.Startup.Interface
 {
 	public interface IDiscordClientHandler
 	{

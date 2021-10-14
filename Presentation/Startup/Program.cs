@@ -1,10 +1,13 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
+using Infrastructure;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using StageBot.Controller;
-using StageBot.Interactor;
-using StageBot.Services;
+using Presentation.Controller.Handler;
+using Presentation.Interactor;
+using Presentation.Interactor.Interface;
+using Presentation.Startup.Interface;
 using System;
 using System.IO.Abstractions;
 using System.Reflection;
@@ -12,7 +15,7 @@ using System.Reflection;
 /// <summary>
 /// Thanks to this doc : https://docs.stillu.cc/guides/introduction/intro.html (doesn't cover the functionalities of Discord.Net.Labs, which is a fork of Discord.Net)
 /// </summary>
-namespace StageBot.Setup
+namespace Presentation.Startup
 {
 	class Program
 	{

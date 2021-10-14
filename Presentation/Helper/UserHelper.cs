@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot.Presentation
+namespace Presentation.Helper
 {
 	public static class UserHelper
 	{
@@ -11,7 +11,5 @@ namespace StageBot.Presentation
 		{
 			return context.User.Username + "#" + context.User.Discriminator;
 		}
-
-		internal static object GetUserTag(object conte) => throw new NotImplementedException();
 	}
 }

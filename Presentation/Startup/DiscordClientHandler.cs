@@ -1,13 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Controller;
-using StageBot.Services;
+using Infrastructure.Services;
+using Presentation.Controller.Handler;
+using Presentation.Startup.Interface;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace StageBot.Presentation
+namespace Presentation.Startup
 {
 	public class DiscordClientHandler : IDiscordClientHandler, IDisposable
 	{

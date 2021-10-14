@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Infrastructure;
+using Microsoft.Extensions.Options;
+using Presentation.Startup.Interface;
 using StageBot.Presentation;
-using StageBot.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace StageBot.Setup
+namespace Presentation.Startup
 {
 	public class BotStartup : IBotStartup, IDisposable
 	{

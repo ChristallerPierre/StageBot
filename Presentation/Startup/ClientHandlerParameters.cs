@@ -1,7 +1,6 @@
-﻿using StageBot.Setup;
-using System;
+﻿using System;
 
-namespace StageBot.Presentation
+namespace Presentation.Startup
 {
 	public class ClientHandlerParameters
 	{
