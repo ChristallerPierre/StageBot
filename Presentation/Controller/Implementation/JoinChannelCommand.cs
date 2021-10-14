@@ -1,11 +1,10 @@
 ﻿using Discord;
+using Discord.Audio;
 using Discord.Commands;
-using Infrastructure.Services;
 using Presentation.Configuration;
 using Presentation.Controller.Attribute;
-using Presentation.Controller.Handler;
 using Presentation.Controller.Interface;
-using System;
+using Presentation.Interactor.Interface;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,13 +15,20 @@ namespace Presentation.Controller.Implementation
 		public const string JOIN = "join";
 		public const string CMD_DESC = "!join <nom du channel> pour que le bot rejoigne le channel vocal précisé.";
 
+		IJoinChannelInteractor _interactor;
+
+		public JoinChannelCommand(IJoinChannelInteractor interactor)
+		{
+			_interactor = interactor;
+		}
+
 		[Name(JOIN)]
 		[Command(JOIN, RunMode = RunMode.Async)]
 		[RequireUserRole(GuildRoles.WIP)]
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join()
 		{
-			return await ExecuteCommand();
+			return await _interactor.JoinAsync(this);
 		}
 
 		[Name(JOIN)]
@@ -31,47 +37,17 @@ namespace Presentation.Controller.Implementation
 		[Summary(CMD_DESC)]
 		public async Task<RuntimeResult> Join(string inputChannelName)
 		{
-			return await ExecuteCommand(inputChannelName);
+			return await _interactor.JoinAsync(this, inputChannelName);
 		}
 
-		private async Task<RuntimeResult> ExecuteCommand(string inputChannelName = "")
-		{
-			try {
-				var selectedChannel = await GetRequestedChannelName(inputChannelName);
-				if (selectedChannel != null)
-					return await HandleChannelFoundAsync(selectedChannel);
-				return new CommandResult(CommandError.ObjectNotFound, LogService.CHANNEL_NOT_FOUND);
-			} catch (Exception e) {
-				LogService.Error(nameof(JoinChannelCommand), LogService.ERROR, e);
-				return new CommandResult(CommandError.Exception, LogService.ERROR);
-			}
-		}
 
-		private async Task<string> GetRequestedChannelName(string inputChannelName)
-		{
-			string selectedChannel;
-			if (string.IsNullOrWhiteSpace(inputChannelName))
-				selectedChannel = GetUserConnectedVoiceChannel();
-			else
-				selectedChannel = GetExistingChannelName(inputChannelName);
-
-			return selectedChannel ?? await SendErrorMessage();
-		}
-
-		private string GetUserConnectedVoiceChannel()
+		public string GetUserConnectedVoiceChannel()
 		{
 			var user = Context.User as IGuildUser;
 			return user.VoiceChannel?.Name;
 		}
 
-		private async Task<string> SendErrorMessage()
-		{
-			LogService.Warn(nameof(SendErrorMessage), LogService.MISING_CHANNEL_NAME);
-			await ReplyAsync(LogService.MISING_CHANNEL_NAME);
-			return null;
-		}
-
-		private string GetExistingChannelName(string inputChannelName)
+		public string GetExistingChannelName(string inputChannelName)
 		{
 			var sanitizedInput = inputChannelName.ToLower().Trim();
 			var selectedChannel = Context.Guild.VoiceChannels
@@ -87,22 +63,12 @@ namespace Presentation.Controller.Implementation
 			return selectedChannel;
 		}
 
-		private async Task<RuntimeResult> HandleChannelFoundAsync(string selectedChannel)
+		public async Task<IAudioClient> ConnectToChannelAsync(string selectedChannel)
 		{
-			var message = $"*a rejoint le channel {selectedChannel}.*";
-			await ReplyAsync(message);
 			var audio = await Context.Guild.VoiceChannels
 				.First(chan => chan.Name == selectedChannel)
 				.ConnectAsync();
-			audio.Disconnected += OnAudioDisconnected;
-			return new CommandResult(null, LogService.SUCCESS);
-		}
-
-		private Task OnAudioDisconnected(Exception e)
-		{
-			// auto reconnect ?
-			LogService.Error(nameof(OnAudioDisconnected), LogService.ERROR, e);
-			return Task.CompletedTask;
+			return audio;
 		}
 	}
 }
