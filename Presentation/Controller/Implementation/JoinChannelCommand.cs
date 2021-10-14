@@ -1,15 +1,17 @@
 ﻿using Discord;
 using Discord.Commands;
-using StageBot.Controller.Precondition;
-using StageBot.Presentation.Configuration;
-using StageBot.Services;
+using Infrastructure.Services;
+using Presentation.Configuration;
+using Presentation.Controller.Attribute;
+using Presentation.Controller.Handler;
+using Presentation.Controller.Interface;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StageBot.Modules
+namespace Presentation.Controller.Implementation
 {
-	public class JoinChannelCommand : ModuleBase<SocketCommandContext>
+	public class JoinChannelCommand : BaseCommand, IJoinChannelCommand
 	{
 		public const string JOIN = "join";
 		public const string CMD_DESC = "!join <nom du channel> pour que le bot rejoigne le channel vocal précisé.";
