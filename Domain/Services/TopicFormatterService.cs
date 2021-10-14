@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot.Domain.Services
+namespace Domain.Services
 {
-	public static class TopicFormatter
+	public static class TopicFormatterService
 	{
 		public static string ReformatTopic(string paramInputTopic)
 		{

@@ -1,11 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller
+namespace Presentation.Controller.Interface
 {
 	public class BaseCommand : ModuleBase<SocketCommandContext>
 	{

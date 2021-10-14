@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller.Precondition
+namespace Presentation.Controller.Attribute
 {
 	public class RequireChannelAttribute : PreconditionAttribute
 	{

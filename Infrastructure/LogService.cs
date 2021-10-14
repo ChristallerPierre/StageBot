@@ -1,14 +1,14 @@
 ﻿using Discord;
 using Discord.Commands;
 using Serilog;
-using StageBot.Presentation;
+using Presentation;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using LogSeri = Serilog.Log;
 
-namespace StageBot.Services
+namespace Infrastructure.Services
 {
 	public static class LogService
 	{

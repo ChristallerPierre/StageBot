@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot.Domain
+namespace Domain.Model
 {
 	// todo : rename this
 

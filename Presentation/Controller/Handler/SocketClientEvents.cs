@@ -1,15 +1,13 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Presentation.Configuration;
+using Presentation.Configuration;
 using StageBot.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller
+namespace Presentation.Controller.Handler
 {
 	public class SocketClientEvents
 	{
@@ -85,7 +83,7 @@ namespace StageBot.Controller
 
 		private bool HandleInexistantCommand(string commandName)
 		{
-			return !CommandDescription.Commands.Any(cmd => cmd.Aliases.Contains(commandName));
+			return !CommandDescriptionHelper.Commands.Any(cmd => cmd.Aliases.Contains(commandName));
 		}
 
 		private async Task ReplyToUnknownCommand(SocketUserMessage message)

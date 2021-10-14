@@ -6,7 +6,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller
+namespace Presentation.Controller.Handler
 {
 	public class CommandHandler : IDisposable
 	{

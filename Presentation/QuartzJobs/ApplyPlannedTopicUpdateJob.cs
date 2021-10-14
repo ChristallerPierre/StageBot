@@ -1,10 +1,8 @@
 ﻿using Quartz;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.QuartzJobs
+namespace StageBot.Presentation.QuartzJobs
 {
 	public class ApplyPlannedTopicUpdateJob : IJob
 	{

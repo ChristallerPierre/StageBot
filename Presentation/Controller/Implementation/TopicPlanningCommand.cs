@@ -1,13 +1,11 @@
 ﻿using Discord.Commands;
-using StageBot.Controller.Precondition;
-using StageBot.Presentation.Configuration;
-using StageBot.Interactor;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Presentation.Configuration;
+using Presentation.Controller.Attribute;
+using Presentation.Controller.Interface;
+using Presentation.Interactor.Interface;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller.PlanningModule
+namespace Presentation.Controller.Implementation
 {
 	public class TopicPlanningCommand : BaseCommand, ITopicPlanningCommand
 	{

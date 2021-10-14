@@ -3,12 +3,10 @@ using Discord.WebSocket;
 using StageBot.Presentation;
 using StageBot.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Controller.Precondition
+namespace Presentation.Controller.Attribute
 {
 	public class RequireUserRoleAttribute : PreconditionAttribute
 	{

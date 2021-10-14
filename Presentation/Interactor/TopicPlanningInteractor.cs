@@ -1,10 +1,10 @@
 ﻿using Discord.Commands;
+using Domain.Services;
+using Infrastructure.Services;
 using Newtonsoft.Json;
-using StageBot.Controller.PlanningModule;
-using StageBot.Presentation;
-using StageBot.Interactor.Services;
-using StageBot.Modules;
-using StageBot.Services;
+using Presentation.Controller.Handler;
+using Presentation.Controller.Interface;
+using Presentation.Interactor.Interface;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Interactor
+namespace Presentation.Interactor
 {
 	public class TopicPlanningInteractor : ITopicPlanningInteractor
 	{
@@ -36,7 +36,12 @@ namespace StageBot.Interactor
 			_fileSystem = fileSystem;
 		}
 
-		public async Task<RuntimeResult> DispatchPlanningAsync(ITopicPlanningCommand command, string action, string date = null, string hour = null, string title = null)
+		public async Task<RuntimeResult> DispatchPlanningAsync(
+			ITopicPlanningCommand command, 
+			string action, 
+			string date = null, 
+			string hour = null, 
+			string title = null)
 		{
 			try {
 				switch (action) {
@@ -140,7 +145,7 @@ namespace StageBot.Interactor
 			newPlanning = new TopicPlanning() {
 				Date = date,
 				Hour = hour,
-				Title = TopicFormatter.ReformatTopic(title)
+				Title = TopicFormatterService.ReformatTopic(title)
 			};
 			return newPlanning;
 		}

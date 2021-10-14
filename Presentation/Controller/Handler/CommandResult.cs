@@ -1,10 +1,6 @@
-﻿using Discord;
-using Discord.Commands;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Discord.Commands;
 
-namespace StageBot.Modules
+namespace Presentation.Controller.Handler
 {
 	public class CommandResult : RuntimeResult
 	{

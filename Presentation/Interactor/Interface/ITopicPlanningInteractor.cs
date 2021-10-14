@@ -1,11 +1,8 @@
 ﻿using Discord.Commands;
-using StageBot.Controller.PlanningModule;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Presentation.Controller.Interface;
 using System.Threading.Tasks;
 
-namespace StageBot.Interactor
+namespace Presentation.Interactor.Interface
 {
 	public interface ITopicPlanningInteractor
 	{

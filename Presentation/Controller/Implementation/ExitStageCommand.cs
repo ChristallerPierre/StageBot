@@ -1,13 +1,16 @@
 ﻿using Discord.Commands;
-using StageBot.Controller.Precondition;
-using StageBot.Presentation.Configuration;
-using StageBot.Services;
+using Domain.Model;
+using Infrastructure.Services;
+using Presentation.Configuration;
+using Presentation.Controller.Attribute;
+using Presentation.Controller.Handler;
+using Presentation.Controller.Interface;
 using System;
 using System.Threading.Tasks;
 
 namespace StageBot.Modules.JoinModule
 {
-	public class ExitStageCommand : ModuleBase<SocketCommandContext>
+	public class ExitStageCommand : BaseCommand, IExitStageCommand
 	{
 		public const string EXIT = "exit";
 		public const string LEAVE = "leave";

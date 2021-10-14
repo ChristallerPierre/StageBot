@@ -1,9 +1,8 @@
-﻿using StageBot.Controller.HelpModule;
-using StageBot.Controller.PlanningModule;
+﻿using Presentation.Controller.Implementation;
 using StageBot.Modules.JoinModule;
 using System.Collections.Generic;
 
-namespace StageBot.Presentation.Helper
+namespace Presentation.Controller.Handler
 {
 	public class CommandDescriptionHelper
 	{

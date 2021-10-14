@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot.Presentation
+namespace Domain.Services
 {
 	public class TopicPlanning
 	{

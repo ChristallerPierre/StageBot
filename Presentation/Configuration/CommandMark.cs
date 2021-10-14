@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StageBot.Presentation.Configuration
+namespace Presentation.Configuration
 {
 	public class CommandMark
 	{

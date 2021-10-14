@@ -1,14 +1,14 @@
 ﻿using Discord.Commands;
-using StageBot.Controller;
-using StageBot.Controller.HelpModule;
-using StageBot.Modules;
-using StageBot.Services;
+using Infrastructure.Services;
+using Presentation.Controller.Handler;
+using Presentation.Controller.Interface;
+using Presentation.Interactor.Interface;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StageBot.Interactor
+namespace Presentation.Interactor
 {
 	public class HelpInteractor : IHelpInteractor
 	{
@@ -28,7 +28,7 @@ namespace StageBot.Interactor
 		{
 			var messageBuilder = new StringBuilder();
 			messageBuilder.AppendLine("Commandes disponibles :");
-			foreach (var commandDesc in CommandDescription.Commands.Select(cmd => cmd.Description)) {
+			foreach (var commandDesc in CommandDescriptionHelper.Commands.Select(cmd => cmd.Description)) {
 				messageBuilder.AppendLine(commandDesc);
 			}
 			return messageBuilder.ToString();
