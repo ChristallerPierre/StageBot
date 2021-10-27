@@ -6,9 +6,9 @@ namespace Domain.Services
 {
 	public class StageChannelService
 	{
-		public Task<ServiceResultDto> EditTopicAsync()
-		{
+		//public Task<ServiceResultDto> EditTopicAsync()
+		//{
 
-		}
+		//}
 	}
 }

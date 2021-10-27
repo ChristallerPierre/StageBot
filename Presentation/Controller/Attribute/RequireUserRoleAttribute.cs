@@ -1,7 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Presentation;
-using StageBot.Services;
+using Infrastructure.Services;
+using Presentation.Helper;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

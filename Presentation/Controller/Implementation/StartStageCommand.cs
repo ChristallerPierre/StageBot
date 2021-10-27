@@ -1,9 +1,11 @@
 ﻿using Discord;
 using Discord.Commands;
-using StageBot.Controller.Precondition;
-using StageBot.Presentation.Configuration;
-using StageBot.Interactor.Services;
-using StageBot.Services;
+using Domain.Model;
+using Domain.Services;
+using Infrastructure.Services;
+using Presentation.Configuration;
+using Presentation.Controller.Attribute;
+using Presentation.Controller.Handler;
 using System;
 using System.Threading.Tasks;
 
@@ -46,7 +48,7 @@ namespace StageBot.Modules.JoinModule
 				var stageChannel = Context.Guild.GetStageChannel(ContextService.IdStageChannel);
 
 				if (IsBotConnectedToStage()) {
-					inputTopic = TopicFormatter.ReformatTopic(inputTopic);
+					inputTopic = TopicFormatterService.ReformatTopic(inputTopic);
 					await stageChannel.StartStageAsync(inputTopic, StagePrivacyLevel.GuildOnly);
 					var messageSuccess = $"*a démarré la présentation sur la scène {stageChannel.Name}.*";
 					await ReplyAsync(messageSuccess);

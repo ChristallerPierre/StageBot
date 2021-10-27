@@ -1,11 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
 using Serilog;
-using Presentation;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-
 using LogSeri = Serilog.Log;
 
 namespace Infrastructure.Services
@@ -24,12 +22,13 @@ namespace Infrastructure.Services
 		public const string CMD_EXECUTED = "Command executed : ";
 		public const string TOPIC_UPDATED = "Topic updated";
 
-		public static string ReadCommandContext(ICommandContext context, string commandName, IResult result = null)
+		public static string ReadCommandContext(
+			string channel, 
+			string usertag, 
+			string messageContent,
+			string commandName,
+			IResult result = null)
 		{
-			var channel = context.Channel.Name;
-			var usertag = UserHelper.GetUserTag(context);
-			var messageContent = context.Message.Content;
-			//var guild = context.Guild.Name;
 			var logResult = result is null ? string.Empty : ReadResult(result);
 
 			//Guild {guild}

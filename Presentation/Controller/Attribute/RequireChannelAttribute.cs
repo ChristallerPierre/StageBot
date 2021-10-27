@@ -1,9 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Presentation;
+using Presentation.Helper;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Presentation.Controller.Attribute
