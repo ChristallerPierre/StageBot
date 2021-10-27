@@ -1,6 +1,7 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
 using Domain.Services;
+using Domain.Services.Interface;
 using Infrastructure.Services;
 using Presentation.Controller.Handler;
 using Presentation.Controller.Implementation;
@@ -13,8 +14,17 @@ namespace Presentation.Interactor
 {
 	public class EditStageInteractor : IEditStageInteractor
 	{
+		IStageChannelService _stageChannelService;
+
+		public EditStageInteractor(IStageChannelService stageChannelService)
+		{
+			_stageChannelService = stageChannelService;
+		}
+
 		public async Task<CommandResult> EditTopicAsync(IEditStageCommand command, string topic, SocketStageChannel stageChannel)
 		{
+			return await _stageChannelService.EditTopicAsync();
+
 			try {
 				topic = TopicFormatterService.ReformatTopic(topic);
 
