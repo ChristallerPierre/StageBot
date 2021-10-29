@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Services
 {
-	public class StageChannelService
+	public class StageChannelService: IStageChannelService
 	{
-		//public Task<ServiceResultDto> EditTopicAsync()
-		//{
-
-		//}
+		public async Task<ServiceResultDto> EditTopicAsync()
+		{
+			return null;
+		}
 	}
 }

@@ -1,7 +1,6 @@
-﻿using Infrastructure;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Presentation.Configuration;
 using Presentation.Startup.Interface;
-using StageBot.Presentation;
 using System;
 using System.Threading.Tasks;
 
