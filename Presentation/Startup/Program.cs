@@ -1,9 +1,11 @@
 ﻿using Discord.Commands;
 using Discord.WebSocket;
-using Infrastructure;
+using Domain.Services;
+using Domain.Services.Interface;
 using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Presentation.Configuration;
 using Presentation.Controller.Handler;
 using Presentation.Interactor;
 using Presentation.Interactor.Interface;
@@ -36,8 +38,12 @@ namespace Presentation.Startup
 					.AddSingleton<CommandHandler>()
 					.AddSingleton<DiscordSocketClient>()
 					.AddSingleton<CommandService>()
+					.AddScoped<IEditStageInteractor, EditStageInteractor>()
+					.AddScoped<IExitStageInteractor, ExitStageInteractor>()
 					.AddScoped<IHelpInteractor, HelpInteractor>()
+					.AddScoped<IJoinChannelInteractor, JoinChannelInteractor>()
 					.AddScoped<ITopicPlanningInteractor, TopicPlanningInteractor>()
+					.AddScoped<IStageChannelService, StageChannelService>()
 					.AddScoped<IFileSystem, FileSystem>()
 					.BuildServiceProvider();
 

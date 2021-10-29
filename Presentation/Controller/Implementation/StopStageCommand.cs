@@ -1,7 +1,9 @@
 ﻿using Discord.Commands;
-using StageBot.Controller.Precondition;
-using StageBot.Presentation.Configuration;
-using StageBot.Services;
+using Domain.Model;
+using Infrastructure.Services;
+using Presentation.Configuration;
+using Presentation.Controller.Attribute;
+using Presentation.Controller.Handler;
 using System;
 using System.Threading.Tasks;
 

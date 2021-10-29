@@ -23,7 +23,7 @@ namespace Presentation.Interactor
 
 		public async Task<CommandResult> EditTopicAsync(IEditStageCommand command, string topic, SocketStageChannel stageChannel)
 		{
-			return await _stageChannelService.EditTopicAsync();
+			//return await _stageChannelService.EditTopicAsync();
 
 			try {
 				topic = TopicFormatterService.ReformatTopic(topic);

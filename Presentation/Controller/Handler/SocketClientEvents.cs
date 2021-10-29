@@ -1,8 +1,9 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using Infrastructure.Services;
 using Presentation.Configuration;
-using StageBot.Services;
+using Presentation.Helper;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace Presentation.Controller.Handler
 			if (HandleInexistantCommand(commandName))
 				await ReplyToUnknownCommand(message);
 			else {
-				var logmsg = LogService.CMD_RECEIVED + Environment.NewLine + LogService.ReadCommandContext(context, commandName);
+				var logmsg = LogService.CMD_RECEIVED + Environment.NewLine + LogHelper.ReadCommandContext(context, commandName);
 				LogService.Info(nameof(OnMessageReceivedAsync), logmsg);
 				await Task.Run(async () => await _command.ExecuteAsync(context, argPos, _services));
 			}

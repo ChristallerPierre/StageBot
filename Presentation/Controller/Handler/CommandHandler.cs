@@ -1,7 +1,8 @@
 ﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
-using StageBot.Services;
+using Infrastructure.Services;
+using Presentation.Helper;
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -49,7 +50,7 @@ namespace Presentation.Controller.Handler
 			//if (commandInfo.IsSpecified)
 			//{
 			commandName = commandInfo.Value.Name;
-			var logmsg = LogService.CMD_EXECUTED + Environment.NewLine + LogService.ReadCommandContext(context, commandName, result);
+			var logmsg = LogService.CMD_EXECUTED + Environment.NewLine + LogHelper.ReadCommandContext(context, commandName, result);
 			LogService.Info(nameof(OnCommandExecutedAsync), logmsg);
 			//} else
 			//	LogService.Warn(nameof(OnCommandExecutedAsync), LogService.MISSING_CMD);
